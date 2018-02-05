@@ -44,6 +44,15 @@ $ads_list = [
     ]
 ];
 
+function format_price($price) {
+    $ceil_num = ceil($price);
+    if ($ceil_num > 1000) {
+        $ceil_num = number_format($ceil_num, 0, '', ' ');
+    }
+
+    return $ceil_num. '  &#8381';
+};
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -122,7 +131,7 @@ $ads_list = [
         </div>
         <ul class="lots__list">
 
-            <?php foreach ($ads_list as $key1 => $value): ?>
+            <?php foreach ($ads_list as $value): ?>
                 <li class="lots__item lot">
                     <div class="lot__image">
                         <img src="<?= $value['img_url'] ?>" width="350" height="260" alt="Сноуборд">
@@ -133,7 +142,7 @@ $ads_list = [
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount">Стартовая цена</span>
-                                <span class="lot__cost"><?= $value['price'] ?><b class="rub">р</b></span>
+                                <span class="lot__cost"><?= format_price($value['price']); ?></span>
                             </div>
                             <div class="lot__timer timer">
 
