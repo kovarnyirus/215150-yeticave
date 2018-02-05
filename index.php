@@ -47,12 +47,10 @@ $ads_list = [
 function format_price($price) {
     $ceil_num = ceil($price);
     if ($ceil_num > 1000) {
-        $ceil_num = number_format($ceil_num, 0, '', ' ') . '  ₽';
-    } else {
-        return $ceil_num . '  ₽';
+        $ceil_num = number_format($ceil_num, 0, '', ' ');
     }
 
-    return $ceil_num;
+    return $ceil_num. '  &#8381';
 };
 
 ?>
