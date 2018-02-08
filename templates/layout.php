@@ -1,13 +1,6 @@
 <?php
 
-function format_price($price) {
-    $ceil_num = ceil($price);
-    if ($ceil_num > 1000) {
-        $ceil_num = number_format($ceil_num, 0, '', ' ');
-    }
 
-    return $ceil_num. '  &#8381';
-};
 
 ?>
 <!DOCTYPE html>
@@ -56,7 +49,7 @@ function format_price($price) {
 </header>
 
 <main class="container">
-    <?= page_content ?>
+    <?= $page_content ?>
 </main>
 
 <footer class="main-footer">
