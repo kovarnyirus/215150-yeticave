@@ -17,5 +17,5 @@ function format_price($price) {
         $ceil_num = number_format($ceil_num, 0, '', ' ');
     }
 
-    return $ceil_num. '  &#8381';
+    return $ceil_num . '  &#8381';
 };
