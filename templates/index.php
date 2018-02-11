@@ -29,7 +29,7 @@
     </div>
     <ul class="lots__list">
 
-        <?php foreach ($ads_list as $value): ?>
+        <?php foreach ($lots_list as $value): ?>
             <li class="lots__item lot">
                 <div class="lot__image">
                     <img src="<?= $value['img_url'] ?>" width="350" height="260" alt="Сноуборд">
