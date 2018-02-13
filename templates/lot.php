@@ -1,6 +1,6 @@
 <section class="lot-item container">
     <?php if (isset($lot)): ?>
-    <h2><?=htmlspecialchars($lot['name']);?></h2>
+    <h2><?=htmlspecialchars($lot['lot-name']);?></h2>
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
