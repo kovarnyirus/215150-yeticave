@@ -1,8 +1,9 @@
 <?php
 require_once('functions.php');
 require_once ('templates/data_templates.php');
+require_once ('lots_list.php');
 
-$page_content = render_template('index', ['ads_list' => $ads_list ]);
+$page_content = render_template('index', ['lots_list' => $lots_list ]);
 $layout_content = render_template('layout', [
     'page_title' => $page_title,
     'user_avatar' => $user_avatar,

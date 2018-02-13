@@ -27,7 +27,5 @@ function time_tomorrow(){
     $ts = time();
     $ts_midnight = strtotime('tomorrow');
     $secs_to_midnight = $ts_midnight - $ts;
-    $hours = floor($secs_to_midnight / 3600);
-    $minutes = floor(($secs_to_midnight % 3600) / 60);
-    return "$hours : $minutes";
+    return date('H:i ', $secs_to_midnight);
 }
