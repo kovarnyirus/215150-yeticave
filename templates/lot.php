@@ -1,10 +1,10 @@
 <section class="lot-item container">
     <?php if (isset($lot)): ?>
-    <h2><?=htmlspecialchars($lot['name']);?></h2>
+    <h2><?=htmlspecialchars($lot['lot-name']);?></h2>
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
-                <img src="<?=$lot['img_url']?>" width="730" height="548" alt="Сноуборд">
+                <img src="<?=$lot['lot_img']?>" width="730" height="548" alt="Сноуборд">
             </div>
             <p class="lot-item__category">Категория: <span><?=$lot['category']?></span></p>
             <p class="lot-item__description"><?= $lot['description']?></p>
