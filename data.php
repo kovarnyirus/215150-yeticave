@@ -60,4 +60,4 @@ $lots_list = [
     ]
 ];
 
-$history_lots = [];
+$history_lots_id = [];

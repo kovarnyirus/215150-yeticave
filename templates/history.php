@@ -1,7 +1,7 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <li class="nav__item">
+            <li class="nav__item nav__item--current">
                 <a href="all-lots.html">Доски и лыжи</a>
             </li>
             <li class="nav__item">
@@ -21,66 +21,39 @@
             </li>
         </ul>
     </nav>
-    <form class="form form--add-lot container form--invalid" action="https://echo.htmlacademy.ru" method="post"> <!-- form--invalid -->
-        <h2>История просмотров</h2>
-        <div class="form__container-two">
-            <div class="form__item form__item--invalid"> <!-- form__item--invalid -->
-                <label for="lot-name">Наименование</label>
-                <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота" required>
-                <span class="form__error">Введите наименование лота</span>
-            </div>
-            <div class="form__item">
-                <label for="category">Категория</label>
-                <select id="category" name="category" required>
-                    <option>Выберите категорию</option>
-                    <option>Доски и лыжи</option>
-                    <option>Крепления</option>
-                    <option>Ботинки</option>
-                    <option>Одежда</option>
-                    <option>Инструменты</option>
-                    <option>Разное</option>
-                </select>
-                <span class="form__error">Выберите категорию</span>
-            </div>
-        </div>
-        <div class="form__item form__item--wide">
-            <label for="message">Описание</label>
-            <textarea id="message" name="message" placeholder="Напишите описание лота" required></textarea>
-            <span class="form__error">Напишите описание лота</span>
-        </div>
-        <div class="form__item form__item--file"> <!-- form__item--uploaded -->
-            <label>Изображение</label>
-            <div class="preview">
-                <button class="preview__remove" type="button">x</button>
-                <div class="preview__img">
-                    <img src="img/avatar.jpg" width="113" height="113" alt="Изображение лота">
-                </div>
-            </div>
-            <div class="form__input-file">
-                <input class="visually-hidden" type="file" id="photo2" value="">
-                <label for="photo2">
-                    <span>+ Добавить</span>
-                </label>
-            </div>
-        </div>
-        <div class="form__container-three">
-            <div class="form__item form__item--small">
-                <label for="lot-rate">Начальная цена</label>
-                <input id="lot-rate" type="number" name="lot-rate" placeholder="0" required>
-                <span class="form__error">Введите начальную цену</span>
-            </div>
-            <div class="form__item form__item--small">
-                <label for="lot-step">Шаг ставки</label>
-                <input id="lot-step" type="number" name="lot-step" placeholder="0" required>
-                <span class="form__error">Введите шаг ставки</span>
-            </div>
-            <div class="form__item">
-                <label for="lot-date">Дата окончания торгов</label>
-                <input class="form__input-date" id="lot-date" type="date" name="lot-date" required>
-                <span class="form__error">Введите дату завершения торгов</span>
-            </div>
-        </div>
-        <span class="form__error form__error--bottom">Пожалуйста, исправьте ошибки в форме.</span>
-        <button type="submit" class="button">Добавить лот</button>
-    </form>
+    <div class="container">
+        <section class="lots">
+            <h2>История просмотров</span></h2>
+            <ul class="lots__list">
+                <?foreach ($history_lot as $key):?>
+                <li class="lots__item lot">
+                    <div class="lot__image">
+                        <img src="<?= $key['lot_img'];?>" width="350" height="260" alt="Сноуборд">
+                    </div>
+                    <div class="lot__info">
+                        <span class="lot__category"><?= $key['category'];?></span>
+                        <h3 class="lot__title"><a class="text-link" href="lot.html"> <?= $key['lot-name'];?> </a></h3>
+                        <div class="lot__state">
+                            <div class="lot__rate">
+                                <span class="lot__amount">Стартовая цена</span>
+                                <span class="lot__cost"><?= $key['price'];?><b class="rub">р</b></span>
+                            </div>
+                            <div class="lot__timer timer">
+                                16:54:12
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <?endforeach;?>
+            </ul>
+        </section>
+        <ul class="pagination-list">
+            <li class="pagination-item pagination-item-prev"><a>Назад</a></li>
+            <li class="pagination-item pagination-item-active"><a>1</a></li>
+            <li class="pagination-item"><a href="#">2</a></li>
+            <li class="pagination-item"><a href="#">3</a></li>
+            <li class="pagination-item"><a href="#">4</a></li>
+            <li class="pagination-item pagination-item-next"><a href="#">Вперед</a></li>
+        </ul>
+    </div>
 </main>

@@ -13,14 +13,14 @@ if (isset($_GET['id'])){
             break;
         }
     }
-    if (isset($_COOKIE['history_lots'])) {
-        if (!in_array($id, json_decode($_COOKIE['history_lots']))) {
-            $history_lots = json_decode($_COOKIE['history_lots']);
-            array_push($history_lots, $id);
-            setcookie('history_lots', json_encode($history_lots), $cookie_live, '/');
+    if (isset($_COOKIE['$history_lots_id'])) {
+        if (!in_array($id, json_decode($_COOKIE['$history_lots_id']))) {
+            $history_lots_id = json_decode($_COOKIE['$history_lots_id']);
+            array_push($history_lots_id, $id);
+            setcookie('$history_lots_id', json_encode($history_lots_id), $cookie_live, '/');
         };
     } else{
-        setcookie('history_lots', json_encode($history_lots), $cookie_live, '/');
+        setcookie('$history_lots_id', json_encode($history_lots_id), $cookie_live, '/');
     };
 };
 
