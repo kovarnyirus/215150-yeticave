@@ -4,6 +4,7 @@ require_once ('data.php');
 
 $lot = null;
 
+
 if (isset($_GET['id'])){
     $id = $_GET['id'];
     foreach ($lots_list as $key => $item) {
@@ -12,7 +13,16 @@ if (isset($_GET['id'])){
             break;
         }
     }
-}
+    if (isset($_COOKIE['$history_lots_id'])) {
+        if (!in_array($id, json_decode($_COOKIE['$history_lots_id']))) {
+            $history_lots_id = json_decode($_COOKIE['$history_lots_id']);
+            array_push($history_lots_id, $id);
+            setcookie('$history_lots_id', json_encode($history_lots_id), $cookie_live, '/');
+        };
+    } else{
+        setcookie('$history_lots_id', json_encode($history_lots_id), $cookie_live, '/');
+    };
+};
 
 if (!$lot){
     http_response_code(404);

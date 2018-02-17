@@ -2,18 +2,33 @@
 require_once('functions.php');
 require_once('data.php');
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
-    $required = ['lot-name', 'description', 'category', 'lot-rate', 'lot-step', 'lot-date' ];
-    $dict = ['lot-name' => 'Название', 'description' => 'Описание', 'lot_img' => 'Изображенеи', 'category' => 'Категория', 'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки', 'lot-date' => 'Дата окончания торгов'];
+    $required =
+        ['lot-name', 'description', 'category', 'lot-rate', 'lot-step', 'lot-date'];
+    $dict = ['lot-name' => 'Название', 'description' => 'Описание',
+        'lot_img' => 'Изображенеи', 'category' => 'Категория',
+        'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки',
+        'lot-date' => 'Дата окончания торгов'];
     $errors = [];
-    foreach ($required as $key) {
+
+    foreach ($required as $key ) {
         if (empty($_POST[$key])) {
             $errors[$key] = 'Это поле надо заполнить';
-        }
+        };
+        if($key === 'lot-rate' || $key === 'lot-step'){
+             if($lot[$key] <= 0) (
+             $errors[$key] = 'Число дожно быть больше нуля.'
+             );
+        } elseif ($key === 'lot-date'){
+            if (strtotime( $lot[$key]) <= strtotime(date('Y-m-d'))){
+              $errors[$key] = 'минимальная длительность торгов 1 день ';
+          };
+        };
     }
 
-    if ($_FILES ['lot_img']['name']){
+
+    if ($_FILES ['lot_img']['name']) {
         $tmp_name = $_FILES['lot_img']['tmp_name'];
         $path = $_FILES['lot_img']['name'];
         $info = finfo_open(FILEINFO_MIME_TYPE);
@@ -21,20 +36,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if ($file_type == "image/jpeg" || $file_type == "image/png") {
             move_uploaded_file($tmp_name, 'img/' . $path);
-            $lot['lot_img'] ='img/'. $path;
-        }else{
+            $lot['lot_img'] = 'img/' . $path;
+        } else {
             $errors['lot_img'] = 'Загрузите картинку в формате JPG или PNG';
         }
-    }else{
+    } else {
         $errors['lot_img'] = 'Вы не загрузили файл';
     };
 
     if (count($errors)) {
-        $page_content = render_template('add', ['lot' => $lot, 'errors' => $errors, 'categories' => $categories, 'dict' => $dict]);
-    } else{
-        $page_content = render_template('lot', ['lot' => $lot,'bets' => $bets ]);
+        $page_content = render_template('add',
+            ['lot' => $lot, 'errors' => $errors, 'categories' => $categories,
+                'dict' => $dict]);
+    } else {
+        $page_content = render_template('lot', ['lot' => $lot, 'bets' => $bets]);
     }
-} else{
+} else {
     $page_content = render_template('add', ['categories' => $categories]);
 }
 
