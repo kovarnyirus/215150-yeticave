@@ -4,8 +4,8 @@ require_once ('data.php');
 
 $history_lot = [];
 
-if (isset($_COOKIE['$history_lots_id'])){
-    $history_lots_id = json_decode($_COOKIE['$history_lots_id']);
+if (isset($_COOKIE[$cookie_name_id_lot])){
+    $history_lots_id = json_decode($_COOKIE[$cookie_name_id_lot]);
     foreach ($history_lots_id as $key => $value){
         array_push ($history_lot, $lots_list[$value]);
     }

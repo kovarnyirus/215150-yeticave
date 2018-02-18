@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errors = [];
 
     foreach ($required as $key ) {
-        if (empty($_POST[$key])) {
+        if (empty($lot[$key])) {
             $errors[$key] = 'Это поле надо заполнить';
         };
         if($key === 'lot-rate' || $key === 'lot-step'){

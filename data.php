@@ -6,12 +6,15 @@ $user_name = 'Константин';
 $user_avatar = 'img/user.jpg';
 $page_title = 'Главная';
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
+$cookie_path = '/';
 $cookie_live = strtotime("+30 days");
+$cookie_name_id_lot = 'history_lots_id';
+
 
 $bets = [
-    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
-    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) .' hour')],
-    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) .' hour')],
+    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) . ' minute')],
+    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) . ' hour')],
+    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) . ' hour')],
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
@@ -60,4 +63,13 @@ $lots_list = [
     ]
 ];
 
-$history_lots_id = [];
+function cookies_write($name_cookies, $value, $expire, $path) {
+    $history_lot = [];
+    if (isset($_COOKIE[$name_cookies])) {
+        $history_lot = json_decode($_COOKIE[$name_cookies]);
+        if (!in_array($value, $history_lot)) {
+            array_push($history_lot, $value);
+        };
+    }
+    setcookie($name_cookies, json_encode($history_lot), $expire, $path);
+};
