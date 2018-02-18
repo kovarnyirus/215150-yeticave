@@ -27,27 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         };
     }
 
-
-    function check_img($file, $file_format, $move_path) {
-        if ($file['name']) {
-            $tmp_name = $file['tmp_name'];
-            $path = $file['name'];
-            $info = finfo_open(FILEINFO_MIME_TYPE);
-            $file_type = finfo_file($info, $tmp_name);
-
-            foreach ($file_format as $value)
-            if ($file_type == $value) {
-                move_uploaded_file($tmp_name, $move_path . $path);
-                return $img_path = [ 'img_path' => $move_path . $path];
-            } else {
-                return 'format error';
-            }
-        } else {
-           return 'no file';
-        }
-    };
-
-    switch ($img = check_img($_FILES ['lot_img'], ['image/jpeg', 'image/png'],'img/')) {
+    switch ($img = check_file($_FILES ['lot_img'], ['image/jpeg', 'image/png'],'img/')) {
         case 'format error':
             $errors['lot_img'] = 'Загрузите картинку в формате JPG или PNG';
             break;

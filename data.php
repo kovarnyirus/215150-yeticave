@@ -62,14 +62,3 @@ $lots_list = [
         'description' => 'Неустойчивость, как известно, быстро разивается, если взвесь вращает лептон. Исследователями из разных лабораторий неоднократно наблюдалось, как призма пространственно восстанавливает резонатор. На улицах и пустырях мальчики запускают воздушных змеев, а девочки играют деревянными ракетками с многоцветными рисунками в ханэ, при этом галактика поглощает Бахрейн'
     ]
 ];
-
-function cookies_write($name_cookies, $value, $expire, $path) {
-    $history_lot = [];
-    if (isset($_COOKIE[$name_cookies])) {
-        $history_lot = json_decode($_COOKIE[$name_cookies]);
-        if (!in_array($value, $history_lot)) {
-            array_push($history_lot, $value);
-        };
-    }
-    setcookie($name_cookies, json_encode($history_lot), $expire, $path);
-};

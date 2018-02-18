@@ -29,3 +29,43 @@ function time_tomorrow(){
     $secs_to_midnight = $ts_midnight - $ts;
     return date('H:i ', $secs_to_midnight);
 }
+
+function check_file($file, $file_format, $move_path) {
+    if ($file['name']) {
+        $tmp_name = $file['tmp_name'];
+        $path = $file['name'];
+        $info = finfo_open(FILEINFO_MIME_TYPE);
+        $file_type = finfo_file($info, $tmp_name);
+
+        foreach ($file_format as $value)
+            if ($file_type == $value) {
+                move_uploaded_file($tmp_name, $move_path . $path);
+                return $img_path = [ 'img_path' => $move_path . $path];
+            } else {
+                return 'format error';
+            }
+    }
+    return 'no file';
+};
+
+function cookies_write($name_cookies, $value, $expire, $path) {
+    $history_lot = [];
+    if (isset($_COOKIE[$name_cookies])) {
+        $history_lot = json_decode($_COOKIE[$name_cookies]);
+        if (!in_array($value, $history_lot)) {
+            array_push($history_lot, $value);
+        };
+    }
+    setcookie($name_cookies, json_encode($history_lot), $expire, $path);
+};
+
+function searchUserByEmail($email, $users) {
+    $result = null;
+    foreach ($users as $user) {
+        if ($user['email'] == $email) {
+            $result = $user;
+            break;
+        }
+    }
+    return $result;
+}
