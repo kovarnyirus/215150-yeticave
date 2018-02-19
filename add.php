@@ -46,7 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $page_content = render_template('lot', ['lot' => $lot, 'bets' => $bets]);
     }
 } else {
-    $page_content = render_template('add', ['categories' => $categories]);
+    if ($is_auth) {
+        $page_content = render_template('add', ['categories' => $categories]);
+    } else {
+        $page_content = '<h3>Добавление лотов доступно только зарегистрированным пользователям</h3>';
+        http_response_code(403);
+    }
+
 }
 
 $layout_content = render_template('layout', [
