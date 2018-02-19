@@ -3,6 +3,8 @@ require_once('functions.php');
 require_once('data.php');
 require_once ('userdata.php');
 
+session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST;
     $required = ['email', 'password'];
@@ -33,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 } else {
     if (isset($_SESSION['user'])) {
-        $page_content = render_template('login', []);
+        $page_content = render_template('index', ['lots_list' => $lots_list]);
     } else {
         $page_content = render_template('login', []);
     }
@@ -42,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $layout_content = render_template('layout', [
     'page_title' => 'Добавить лот',
     'user_avatar' => $user_avatar,
-    'user_name' => $user_name,
+    'user_name' => $_SESSION['user']['name'],
     'is_auth' => $is_auth,
     'page_content' => $page_content,
     'categories' => $categories

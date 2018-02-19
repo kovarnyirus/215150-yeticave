@@ -1,8 +1,8 @@
 <?php
-// ставки пользователей, которыми надо заполнить таблицу
-$is_auth = (bool)rand(0, 1);
+session_start();
+$is_auth = isset($_SESSION['user']) ? true: false;
 date_default_timezone_set('Europe/Moscow');
-$user_name = 'Константин';
+$user_name = isset($_SESSION['user']) ? $_SESSION['user']['name'] : ' ';
 $user_avatar = 'img/user.jpg';
 $page_title = 'Главная';
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
