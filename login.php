@@ -8,14 +8,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required = ['email', 'password'];
     $errors = check_required_field($required, $form);
 
-    if (!count($errors) and $user = searchUserByEmail($form['email'], $users)) {
-        if (password_verify($form['password'], $user['password'])) {
-            $_SESSION['user'] = $user;
+
+    if(!count($errors)){
+        if($user = searchUserByEmail($form['email'], $users)){
+            if (password_verify($form['password'], $user['password'])) {
+                $_SESSION['user'] = $user;
+            } else {
+                $errors['password'] = 'Неверный пароль';
+            }
         } else {
-            $errors['password'] = 'Неверный пароль';
+            $errors['email'] = 'Такой пользователь не найден';
         }
-    } elseif (empty($errors['email']) and !empty($user)) {
-        $errors['email'] = 'Такой пользователь не найден';
     };
 
     if (count($errors)) {

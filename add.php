@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки',
         'lot-date' => 'Дата окончания торгов'];
     $errors = check_required_field($required ,$lot);;
-    
+
     foreach ($required as $key ) {
         if($key === 'lot-rate' || $key === 'lot-step'){
              if($lot[$key] <= 0) (
