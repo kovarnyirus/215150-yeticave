@@ -1,17 +1,20 @@
 <?php
-// ставки пользователей, которыми надо заполнить таблицу
-$is_auth = (bool)rand(0, 1);
+session_start();
+$is_auth = isset($_SESSION['user']) ? true: false;
 date_default_timezone_set('Europe/Moscow');
-$user_name = 'Константин';
+$user_name = isset($_SESSION['user']) ? $_SESSION['user']['name'] : ' ';
 $user_avatar = 'img/user.jpg';
 $page_title = 'Главная';
 $categories = ['Доски и лыжи', 'Крепления', 'Ботинки', 'Одежда', 'Инструменты', 'Разное'];
+$cookie_path = '/';
 $cookie_live = strtotime("+30 days");
+$cookie_name_id_lot = 'history_lots_id';
+
 
 $bets = [
-    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) .' minute')],
-    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) .' hour')],
-    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) .' hour')],
+    ['name' => 'Иван', 'price' => 11500, 'ts' => strtotime('-' . rand(1, 50) . ' minute')],
+    ['name' => 'Константин', 'price' => 11000, 'ts' => strtotime('-' . rand(1, 18) . ' hour')],
+    ['name' => 'Евгений', 'price' => 10500, 'ts' => strtotime('-' . rand(25, 50) . ' hour')],
     ['name' => 'Семён', 'price' => 10000, 'ts' => strtotime('last week')]
 ];
 
@@ -59,5 +62,3 @@ $lots_list = [
         'description' => 'Неустойчивость, как известно, быстро разивается, если взвесь вращает лептон. Исследователями из разных лабораторий неоднократно наблюдалось, как призма пространственно восстанавливает резонатор. На улицах и пустырях мальчики запускают воздушных змеев, а девочки играют деревянными ракетками с многоцветными рисунками в ханэ, при этом галактика поглощает Бахрейн'
     ]
 ];
-
-$history_lots_id = [];

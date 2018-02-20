@@ -10,12 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'lot_img' => 'Изображенеи', 'category' => 'Категория',
         'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки',
         'lot-date' => 'Дата окончания торгов'];
-    $errors = [];
+    $errors = check_required_field($required ,$lot);;
 
     foreach ($required as $key ) {
-        if (empty($_POST[$key])) {
-            $errors[$key] = 'Это поле надо заполнить';
-        };
         if($key === 'lot-rate' || $key === 'lot-step'){
              if($lot[$key] <= 0) (
              $errors[$key] = 'Число дожно быть больше нуля.'
@@ -27,22 +24,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         };
     }
 
-
-    if ($_FILES ['lot_img']['name']) {
-        $tmp_name = $_FILES['lot_img']['tmp_name'];
-        $path = $_FILES['lot_img']['name'];
-        $info = finfo_open(FILEINFO_MIME_TYPE);
-        $file_type = finfo_file($info, $tmp_name);
-
-        if ($file_type == "image/jpeg" || $file_type == "image/png") {
-            move_uploaded_file($tmp_name, 'img/' . $path);
-            $lot['lot_img'] = 'img/' . $path;
-        } else {
+    switch ($img = check_file($_FILES ['lot_img'], ['image/jpeg', 'image/png'],'img/')) {
+        case 'format error':
             $errors['lot_img'] = 'Загрузите картинку в формате JPG или PNG';
-        }
-    } else {
-        $errors['lot_img'] = 'Вы не загрузили файл';
-    };
+            break;
+        case 'no file':
+            $errors['lot_img'] = 'Вы не загрузили файл';
+            break;
+        default:
+            $lot['lot_img'] = $img['img_path'];
+    }
 
     if (count($errors)) {
         $page_content = render_template('add',
@@ -52,7 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $page_content = render_template('lot', ['lot' => $lot, 'bets' => $bets]);
     }
 } else {
-    $page_content = render_template('add', ['categories' => $categories]);
+    if ($is_auth) {
+        $page_content = render_template('add', ['categories' => $categories]);
+    } else {
+        $page_content = '<h3>Добавление лотов доступно только зарегистрированным пользователям</h3>';
+        http_response_code(403);
+    }
+
 }
 
 $layout_content = render_template('layout', [
