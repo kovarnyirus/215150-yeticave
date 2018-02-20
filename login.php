@@ -6,13 +6,7 @@ require_once ('userdata.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST;
     $required = ['email', 'password'];
-    $errors = [];
-
-    foreach ($required as $key){
-        if (empty($form[$key])){
-            $errors[$key] = 'Это поле надо заполнить';
-        }
-    }
+    $errors = check_required_field($required, $form);
 
     if (!count($errors) and $user = searchUserByEmail($form['email'], $users)) {
         if (password_verify($form['password'], $user['password'])) {

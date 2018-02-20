@@ -68,4 +68,14 @@ function searchUserByEmail($email, $users) {
         }
     }
     return $result;
-}
+};
+
+function check_required_field($required_arr, $check_array){
+    $errors=[];
+    foreach ($required_arr as $key){
+        if (empty($check_array[$key])){
+            $errors[$key] = 'Это поле надо заполнить';
+        }
+    }
+    return $errors;
+};

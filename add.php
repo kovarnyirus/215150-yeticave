@@ -10,12 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'lot_img' => 'Изображенеи', 'category' => 'Категория',
         'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки',
         'lot-date' => 'Дата окончания торгов'];
-    $errors = [];
-
+    $errors = check_required_field($required ,$lot);;
+    
     foreach ($required as $key ) {
-        if (empty($lot[$key])) {
-            $errors[$key] = 'Это поле надо заполнить';
-        };
         if($key === 'lot-rate' || $key === 'lot-step'){
              if($lot[$key] <= 0) (
              $errors[$key] = 'Число дожно быть больше нуля.'
