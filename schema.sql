@@ -12,8 +12,8 @@ CREATE TABLE lot (
   id             INT AUTO_INCREMENT PRIMARY KEY,
   lot_create     DATETIME,
   name           CHAR(70)  NOT NULL,
-  description    TEXT      NULL,
-  lot_img        CHAR(100) NULL,
+  description    TEXT      NOT NULL,
+  lot_img        CHAR(100) NOT NULL,
   initial_price  INT       NOT NULL,
   completio_date DATE      NOT NULL,
   step           INT       NOT NULL
@@ -31,6 +31,6 @@ CREATE TABLE user (
   email             CHAR(30) NOT NULL UNIQUE,
   name              CHAR(30) NOT NULL,
   password          CHAR(68) NOT NULL UNIQUE,
-  avatar            CHAR(60),
-  contacts          CHAR(50)
+  avatar            CHAR(60) null,
+  contacts          CHAR(50) null
 );
