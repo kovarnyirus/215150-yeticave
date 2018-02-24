@@ -1,5 +1,4 @@
 <?php
-session_start();
 $is_auth = isset($_SESSION['user']) ? true: false;
 date_default_timezone_set('Europe/Moscow');
 $user_name = isset($_SESSION['user']) ? $_SESSION['user']['name'] : ' ';

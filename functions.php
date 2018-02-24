@@ -1,4 +1,5 @@
 <?php
+session_start();
 function render_template ($name_template, $array_data) {
     $PATH = 'templates/';
     $EXTENSION ='.php';
