@@ -10,14 +10,6 @@ CREATE TABLE categories (
   ENGINE = InnoDB
   CHARACTER SET = UTF8;
 
-CREATE TABLE bets (
-  id         INT AUTO_INCREMENT PRIMARY KEY,
-  bet_date   DATE NOT NULL,
-  user_price INT  NOT NULL
-)
-  ENGINE = InnoDB,
-  CHARACTER SET = UTF8;
-
 CREATE TABLE users (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   created_date DATETIME,
@@ -37,16 +29,30 @@ CREATE TABLE lots (
   description    TEXT         NOT NULL,
   lot_img        VARCHAR(100) NOT NULL,
   initial_price  INT          NOT NULL,
-  completio_date DATE         NOT NULL,
+  date_end       DATETIME     NOT NULL,
   step           INT          NOT NULL,
-  winner_id      INT          NOT NULL,
-  user_id        INT          NOT NULL,
-  category_id    INT          NOT NULL,
-  FOREIGN KEY (category_id) REFERENCES categories (id)
+  fk_winner_id   INT          NOT NULL,
+  fk_user_id     INT          NOT NULL,
+  fk_category_id INT          NOT NULL,
+  FOREIGN KEY (fk_category_id) REFERENCES categories (id)
     ON UPDATE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users (id)
+  FOREIGN KEY (fk_user_id) REFERENCES users (id)
     ON UPDATE CASCADE,
-  FOREIGN KEY (winner_id) REFERENCES users (id)
+  FOREIGN KEY (fk_winner_id) REFERENCES users (id)
+    ON UPDATE CASCADE
+)
+  ENGINE = InnoDB,
+  CHARACTER SET = UTF8;
+
+CREATE TABLE bets (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  bet_date   DATE NOT NULL,
+  user_price INT  NOT NULL,
+  fk_user_id INT,
+  fk_lot_id  INT,
+  FOREIGN KEY (fk_user_id) REFERENCES users (id)
+    ON UPDATE CASCADE,
+  FOREIGN KEY (fk_lot_id) REFERENCES lots (id)
     ON UPDATE CASCADE
 )
   ENGINE = InnoDB,
