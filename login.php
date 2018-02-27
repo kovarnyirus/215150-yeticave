@@ -3,7 +3,18 @@ require_once('functions.php');
 require_once('data.php');
 require_once('db_connect.php');
 
-$users = [];
+$user = [];
+
+function searchInSqlTable($connect, $table_name, $search_value, $vars){
+    
+    $value = mysqli_real_escape_string($connect, $search_value);
+    $sql = 'SELECT `email`, `name`, `password`'
+        . " FROM $table_name"
+        . " WHERE email = '$value'";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+}
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST;
@@ -14,20 +25,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = mysqli_connect_error();
         $content = include_template('error', ['error' => $error]);
     } else {
-        $sql = 'SELECT `email`, `name`, `password` FROM users';
-        $result = mysqli_query($db_connect, $sql);
+
+        $result = searchInSqlTable($db_connect, users, $form['email']);
 
         if ($result) {
-            $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+            $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
         } else {
             $error = mysqli_error($db_connect);
-            $content = include_template('error', ['error' => $error]);
+            $content = render_template('error', ['error' => $error]);
         }
     }
 
 
     if (!count($errors)) {
-        if ($user = searchUserByEmail($form['email'], $users)) {
+        if ($user = searchUserByEmail($form['email'], $user)) {
             if (password_verify($form['password'], $user['password'])) {
                 $_SESSION['user'] = $user;
             } else {
