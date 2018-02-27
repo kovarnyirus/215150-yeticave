@@ -12,18 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'name' => 'Имя', 'contacts' => 'Контакты'];
     $errors = check_required_field($required, $user);
 
-//    foreach ($required as $key) {
-//        if ($key === 'lot-rate' || $key === 'lot-step') {
-//            if ($lot[$key] <= 0) (
-//            $errors[$key] = 'Число дожно быть больше нуля.'
-//            );
-//        } elseif ($key === 'lot-date') {
-//            if (strtotime($lot[$key]) <= strtotime(date('Y-m-d'))) {
-//                $errors[$key] = 'минимальная длительность торгов 1 день ';
-//            };
-//        };
-//    }
-
     if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = 'Необходимо ввести корректный email';
     } else {
@@ -45,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $errors['avatar'] = 'Загрузите картинку в формате JPG или PNG';
                 break;
             case 'no file':
-                $user['avatar'] = null;
+                $user['avatar'] = ' ';
                 break;
             default:
                 $user['avatar'] = $img['img_path'];
@@ -62,9 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             'user' => $user]);
     } else {
         $sql =
-            "INSERT INTO `users` (name, email, password, avatar, contacts) VALUES (?, ?, ?, ?, ?)";
-        $stmt = db_get_prepare_stmt($db_connect, $sql, [$user['name'], $user['email'],
-            password_hash($user['password'], PASSWORD_BCRYPT), $user['avatar'],
+            "INSERT INTO users (name, email, password, avatar, contacts, created_date) VALUES (?, ?, ?, ?, ?, NOW())";
+        $stmt = db_get_prepare_stmt($db_connect, $sql, [$user['name'], $user['email'], password_hash($user['password'], PASSWORD_BCRYPT), $user['avatar'],
             $user['contacts']]);
         $res = mysqli_stmt_execute($stmt);
 
