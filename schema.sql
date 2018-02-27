@@ -12,12 +12,12 @@ CREATE TABLE categories (
 
 CREATE TABLE users (
   id           INT AUTO_INCREMENT PRIMARY KEY,
-  created_date DATETIME,
-  email        VARCHAR(30) NOT NULL UNIQUE,
   name         VARCHAR(30) NOT NULL,
+  email        VARCHAR(30) NOT NULL UNIQUE,
   password     VARCHAR(68) NOT NULL UNIQUE,
   avatar       VARCHAR(60) NULL,
-  contacts     VARCHAR(50) NULL
+  contacts     VARCHAR(50) NULL,
+  created_date DATETIME
 )
   ENGINE = InnoDB,
   CHARACTER SET = UTF8;

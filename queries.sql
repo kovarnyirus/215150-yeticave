@@ -133,6 +133,5 @@ group by
 SELECT
   user_price
 FROM bets
-  JOIN lots ON bets.fk_lot_id = lots.id
 WHERE fk_lot_id = 2
 ORDER BY bet_date DESC;

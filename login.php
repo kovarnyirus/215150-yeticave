@@ -1,16 +1,33 @@
 <?php
 require_once('functions.php');
 require_once('data.php');
-require_once ('userdata.php');
+require_once('db_connect.php');
+
+$users = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST;
     $required = ['email', 'password'];
     $errors = check_required_field($required, $form);
 
+    if (!$db_connect) {
+        $error = mysqli_connect_error();
+        $content = include_template('error', ['error' => $error]);
+    } else {
+        $sql = 'SELECT `email`, `name`, `password` FROM users';
+        $result = mysqli_query($db_connect, $sql);
 
-    if(!count($errors)){
-        if($user = searchUserByEmail($form['email'], $users)){
+        if ($result) {
+            $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        } else {
+            $error = mysqli_error($db_connect);
+            $content = include_template('error', ['error' => $error]);
+        }
+    }
+
+
+    if (!count($errors)) {
+        if ($user = searchUserByEmail($form['email'], $users)) {
             if (password_verify($form['password'], $user['password'])) {
                 $_SESSION['user'] = $user;
             } else {
