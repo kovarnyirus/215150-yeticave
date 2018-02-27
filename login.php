@@ -14,14 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = mysqli_connect_error();
         $content = include_template('error', ['error' => $error]);
     } else {
-        $sql = 'SELECT `email`, `name`, `password` FROM users';
-        $result = mysqli_query($db_connect, $sql);
+
+
+
+
+        $result = check_email_users($db_connect, $form['email']);
 
         if ($result) {
             $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
         } else {
             $error = mysqli_error($db_connect);
-            $content = include_template('error', ['error' => $error]);
+            $content = render_template('error', ['error' => $error]);
         }
     }
 
