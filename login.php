@@ -5,17 +5,6 @@ require_once('db_connect.php');
 
 $user = [];
 
-function searchInSqlTable($connect, $table_name, $search_value, $vars){
-    
-    $value = mysqli_real_escape_string($connect, $search_value);
-    $sql = 'SELECT `email`, `name`, `password`'
-        . " FROM $table_name"
-        . " WHERE email = '$value'";
-    $result = mysqli_query($connect, $sql);
-    return $result;
-}
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST;
     $required = ['email', 'password'];
@@ -26,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $content = include_template('error', ['error' => $error]);
     } else {
 
-        $result = searchInSqlTable($db_connect, users, $form['email']);
+        $result = searchInSqlTable($db_connect, users, $form['email'], ['name', 'email', 'password']);
 
         if ($result) {
             $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
