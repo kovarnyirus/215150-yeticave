@@ -27,8 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    if ($_FILES ['avatar']){
-        switch ($img = check_file($_FILES ['avatar'], ['image/jpeg', 'image/png'], 'img/')) {
+    if ($_FILES ['avatar']) {
+        switch ($img =
+            check_file($_FILES ['avatar'], ['image/jpeg', 'image/png'], 'img/')) {
             case 'format error':
                 $errors['avatar'] = 'Загрузите картинку в формате JPG или PNG';
                 break;
@@ -41,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
 
-
     if (count($errors)) {
         $page_content = render_template('registration',
                                         ['errors' => $errors,
@@ -51,15 +51,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $sql =
             "INSERT INTO users (name, email, password, avatar, contacts, created_date) VALUES (?, ?, ?, ?, ?, NOW())";
-        $stmt = db_get_prepare_stmt($db_connect, $sql, [$user['name'], $user['email'], password_hash($user['password'], PASSWORD_BCRYPT), $user['avatar'],
+        $stmt = db_get_prepare_stmt($db_connect, $sql, [$user['name'], $user['email'],
+            password_hash($user['password'], PASSWORD_BCRYPT), $user['avatar'],
             $user['contacts']]);
         $res = mysqli_stmt_execute($stmt);
 
         if ($res) {
             header('Location: login.php');
             exit();
-        } else{
-            $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
+        } else {
+            $page_content =
+                render_template('error', ['error' => mysqli_error($db_connect)]);
         }
     }
 } else {

@@ -81,12 +81,21 @@ function check_required_field($required_arr, $check_array){
     return $errors;
 };
 
+
 function searchInSqlTable($connect, $table_name, $search_value, $table_fields){
     $fields = implode(', ', $table_fields);
     $value = mysqli_real_escape_string($connect, $search_value);
     $sql = "SELECT $fields"
-        . " FROM $table_name"
-        . " WHERE email = '$value'";
+        . " FROM $table_name";
     $result = mysqli_query($connect, $sql);
     return $result;
-}
+};
+
+function check_email_users($connect, $value){
+    $email = mysqli_real_escape_string($connect, $value);
+    $sql = "SELECT `email`, `name`, `password`"
+        ." FROM users"
+        . " WHERE email = '$email'";
+    $result = mysqli_query($connect, $sql);
+    return $result;
+};

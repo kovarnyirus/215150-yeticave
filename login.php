@@ -12,10 +12,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$db_connect) {
         $error = mysqli_connect_error();
-        $content = include_template('error', ['error' => $error]);
+        $content = render_template('error', ['error' => $error]);
     } else {
+//        $result = searchInSqlTable($db_connect, users, $form['email'], ['name', 'email', 'password']);
 
-        $result = searchInSqlTable($db_connect, users, $form['email'], ['name', 'email', 'password']);
+        $result = check_email_users($db_connect, $form['email']);
 
         if ($result) {
             $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
