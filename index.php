@@ -9,14 +9,9 @@ if (!$db_connect) {
     $error = mysqli_connect_error();
     $content = render_template('error', ['error' => $error]);
 } else {
-    $sql = 'SELECT `id`, `category_name` FROM categories';
-    $result = mysqli_query($db_connect, $sql);
-    if ($result) {
-        $categories = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    } else {
-        $error = mysqli_error($db_connect);
-        $content = render_template('error', ['error' => $error]);
-    }
+    $category_sql = 'SELECT `id`, `category_name` FROM categories';
+
+    $categories = get_sql($db_connect, $category_sql);
 
     $now_date = date( "Y-m-d G:i:s", strtotime( "now" ) );
 

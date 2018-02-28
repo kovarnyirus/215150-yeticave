@@ -99,3 +99,14 @@ function check_email_users($connect, $value){
     $result = mysqli_query($connect, $sql);
     return $result;
 };
+
+
+function get_sql($connect, $sql ){
+    $result = mysqli_query($connect, $sql);
+    if ($result) {
+        return mysqli_fetch_all($result, MYSQLI_ASSOC);
+    }else {
+        $error = mysqli_error($connect);
+        return $content = render_template('error', ['error' => $error]);
+    }
+}

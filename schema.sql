@@ -24,7 +24,7 @@ CREATE TABLE users (
 
 CREATE TABLE lots (
   id             INT AUTO_INCREMENT PRIMARY KEY,
-  created_date   DATETIME,
+  created_date   DATETIME  NOT NULL DEFAULT NOW(),
   name           VARCHAR(70)  NOT NULL,
   description    TEXT         NOT NULL,
   lot_img        VARCHAR(100) NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE lots (
 
 CREATE TABLE bets (
   id         INT AUTO_INCREMENT PRIMARY KEY,
-  bet_date   DATE NOT NULL,
+  bet_date   DATETIME NOT NULL DEFAULT NOW(),
   user_price INT  NOT NULL,
   fk_user_id INT,
   fk_lot_id  INT,

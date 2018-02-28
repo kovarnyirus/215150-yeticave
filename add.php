@@ -1,6 +1,7 @@
 <?php
 require_once('functions.php');
 require_once('data.php');
+require_once('db_connect.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
@@ -40,10 +41,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ['lot' => $lot, 'errors' => $errors, 'categories' => $categories,
                 'dict' => $dict]);
     } else {
-        $page_content = render_template('lot', ['lot' => $lot, 'bets' => $bets]);
+
+
+
+        $sql =
+            "INSERT INTO lost (name, description, lot_img, initial_price, date_end, step) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = db_get_prepare_stmt($db_connect, $sql, [$lot['name'], $lot['description'], $lot['lot_img'],
+            $lot['initial_price'], $lot['date_end'], $lot['step']]);
+        $res = mysqli_stmt_execute($stmt);
+
+        if ($res){
+            $page_content = render_template('lot', ['lot' => $lot, 'bets' => $bets]);
+        } else {
+            $page_content =
+                render_template('error', ['error' => mysqli_error($db_connect)]);
+        }
     }
 } else {
     if ($is_auth) {
+        $category_sql = 'SELECT `id`, `category_name` FROM categories';
+        $categories = get_sql($db_connect, $category_sql);
         $page_content = render_template('add', ['categories' => $categories]);
     } else {
         $page_content = '<h3>Добавление лотов доступно только зарегистрированным пользователям</h3>';

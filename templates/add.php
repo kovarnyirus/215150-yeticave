@@ -47,7 +47,7 @@
                 <select id="category" name="category">
                     <option>Выберите категорию</option>
                     <?php foreach ($categories as $key => $val): ?>
-                        <?php if ($val == $lot['category']): ?>
+                        <?php if ($val['category_name'] == $lot['category']): ?>
                             <option selected ='selected'><?=$val;?></option>
                         <?php else: ?>
                             <option><?=$val;?></option>
