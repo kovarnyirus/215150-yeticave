@@ -155,3 +155,15 @@ function get_sql($connect, $sql ){
         return $content = render_template('error', ['error' => $error]);
     }
 }
+
+//    звозвращает ассоциативный массив с лотом значениями которого являются значения двумерного массива
+function sub_array($array_in) {
+    $array_out = [];
+    foreach ($array_in as $subArr) {
+        foreach ($subArr as $key => $val) {
+            if (isset($array_out[$key]) && $array_out[$key] > $val) continue;
+            $array_out[$key] = $val;
+        }
+    }
+    return $array_out;
+};

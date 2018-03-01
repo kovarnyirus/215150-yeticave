@@ -1,16 +1,16 @@
 <section class="lot-item container">
     <?php if (isset($lot)): ?>
-    <h2><?=htmlspecialchars($lot['lot-name']);?></h2>
+    <h2><?=htmlspecialchars($lot['name']);?></h2>
     <div class="lot-item__content">
         <div class="lot-item__left">
             <div class="lot-item__image">
                 <img src="<?=$lot['lot_img']?>" width="730" height="548" alt="Сноуборд">
             </div>
-            <p class="lot-item__category">Категория: <span><?=$lot['category']?></span></p>
+            <p class="lot-item__category">Категория: <span><?=$lot['category_name']?></span></p>
             <p class="lot-item__description"><?= $lot['description']?></p>
         </div>
         <div class="lot-item__right">
-            <?php if (isset($_SESSION['user'])):?>
+            <?php if (isset($_SESSION['user']) and !($_SESSION['user']['id'] == $lot['user_id'])):?>
             <div class="lot-item__state">
                 <div class="lot-item__timer timer">
                     10:54:12
@@ -24,7 +24,7 @@
                         Мин. ставка <span>12 000 р</span>
                     </div>
                 </div>
-                <form class="lot-item__form" action="https://echo.htmlacademy.ru" method="post">
+                <form class="lot-item__form" action="lot.php?id=<?=$lot['id']?>" method="post">
                     <p class="lot-item__form-item">
                         <label for="cost">Ваша ставка</label>
                         <input id="cost" type="number" name="cost" placeholder="12 000">

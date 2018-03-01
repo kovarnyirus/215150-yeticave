@@ -2,7 +2,6 @@
 require_once('functions.php');
 require_once('data.php');
 require_once('db_connect.php');
-require_once('mysql_helper.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST;

@@ -7,6 +7,9 @@ $category_sql = 'SELECT `id`, `category_name` FROM categories';
 $categories = get_sql($db_connect, $category_sql);
 $bets_sql = '';
 
+
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
     $required =
@@ -53,16 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $category_id = $cat['id'];
             }
         }
-
-        $user_id;
-
-
-
-
+        $user_id = $_SESSION['user']['id'];
 
 
         $sql = "INSERT INTO lots (name, description, lot_img, initial_price, date_end, step, fk_user_id, fk_category_id ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = db_get_prepare_stmt($db_connect, $sql, [$lot['lot-name'], $lot['description'], $lot['lot_img'], $lot['initial_price'], $lot['date_end'], $lot['lot-step'],$user_id , $category_id]);
+        $stmt = db_get_prepare_stmt($db_connect, $sql, [$lot['lot-name'], $lot['description'], $lot['lot_img'], $lot['initial_price'], $lot['date_end'], $lot['lot-step'], $user_id , $category_id]);
         $res = mysqli_stmt_execute($stmt);
 
         if ($res){

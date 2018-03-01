@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = mysqli_connect_error();
         $content = render_template('error', ['error' => $error]);
     } else {
-//        $result = searchInSqlTable($db_connect, users, $form['email'], ['name', 'email', 'password']);
 
         $result = check_email_users($db_connect, $form['email']);
 
