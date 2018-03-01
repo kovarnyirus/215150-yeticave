@@ -13,7 +13,7 @@ if (!$db_connect) {
 
     $categories = get_sql($db_connect, $category_sql);
 
-    $now_date = date( "Y-m-d G:i:s", strtotime( "now" ) );
+    $now_date = date( "Y-m-d", strtotime( "now" ) );
 
     $sql = "select lot.id, lot.name, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name from lots lot"
     . " inner join categories on lot.fk_category_id = categories.id"

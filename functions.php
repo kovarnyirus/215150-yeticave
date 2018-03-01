@@ -38,13 +38,14 @@ function check_file($file, $file_format, $move_path) {
         $info = finfo_open(FILEINFO_MIME_TYPE);
         $file_type = finfo_file($info, $tmp_name);
 
-        foreach ($file_format as $value)
-            if ($file_type == $value) {
+        foreach ($file_format as $key => $value){
+            if ($file_type == $value ) {
                 move_uploaded_file($tmp_name, $move_path . $path);
                 return $img_path = [ 'img_path' => $move_path . $path];
-            } else {
+            } else if (count($file_format) <= --$key) {
                 return 'format error';
             }
+        }
     }
     return 'no file';
 };
@@ -81,6 +82,50 @@ function check_required_field($required_arr, $check_array){
     return $errors;
 };
 
+/**
+ * Создает подготовленное выражение на основе готового SQL запроса и переданных данных
+ *
+ * @param $link mysqli Ресурс соединения
+ * @param $sql string SQL запрос с плейсхолдерами вместо значений
+ * @param array $data Данные для вставки на место плейсхолдеров
+ *
+ * @return mysqli_stmt Подготовленное выражение
+ */
+function db_get_prepare_stmt($link, $sql, $data = []) {
+    $stmt = mysqli_prepare($link, $sql);
+
+    if ($data) {
+        $types = '';
+        $stmt_data = [];
+
+        foreach ($data as $value) {
+            $type = null;
+
+            if (is_int($value)) {
+                $type = 'i';
+            }
+            else if (is_string($value)) {
+                $type = 's';
+            }
+            else if (is_double($value)) {
+                $type = 'd';
+            }
+
+            if ($type) {
+                $types .= $type;
+                $stmt_data[] = $value;
+            }
+        }
+
+        $values = array_merge([$stmt, $types], $stmt_data);
+
+        $func = 'mysqli_stmt_bind_param';
+        $func(...$values);
+    }
+
+    return $stmt;
+}
+
 
 function searchInSqlTable($connect, $table_name, $search_value, $table_fields){
     $fields = implode(', ', $table_fields);
@@ -91,9 +136,9 @@ function searchInSqlTable($connect, $table_name, $search_value, $table_fields){
     return $result;
 };
 
-function check_email_users($connect, $value){
-    $email = mysqli_real_escape_string($connect, $value);
-    $sql = "SELECT `email`, `name`, `password`"
+function check_email_users($connect, $email){
+    $email = mysqli_real_escape_string($connect, $email);
+    $sql = "SELECT `id`, `email`, `name`, `password`"
         ." FROM users"
         . " WHERE email = '$email'";
     $result = mysqli_query($connect, $sql);

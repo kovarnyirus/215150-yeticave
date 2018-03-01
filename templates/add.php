@@ -46,11 +46,11 @@
                 <label for="category">Категория</label>
                 <select id="category" name="category">
                     <option>Выберите категорию</option>
-                    <?php foreach ($categories as $key => $val): ?>
-                        <?php if ($val['category_name'] == $lot['category']): ?>
-                            <option selected ='selected'><?=$val;?></option>
+                    <?php foreach ($categories as $key => $cat): ?>
+                        <?php if ($cat['category_name'] == $lot['category']): ?>
+                            <option selected ='selected'><?=$cat['category_name'];?></option>
                         <?php else: ?>
-                            <option><?=$val;?></option>
+                            <option><?=$cat['category_name'];?></option>
                     <?php endif ?>
                     <?php endforeach; ?>
                 </select>
@@ -84,11 +84,11 @@
             </div>
         </div>
         <div class="form__container-three">
-            <?php $class_name = isset($errors['lot-rate']) ? 'form__item--invalid' : '';
-            $value = isset($lot['lot-rate']) ? $lot['lot-rate'] : ""; ?>
+            <?php $class_name = isset($errors['initial_price']) ? 'form__item--invalid' : '';
+            $value = isset($lot['initial_price']) ? $lot['initial_price'] : ""; ?>
             <div class="form__item form__item--small <?= $class_name ?>">
-                <label for="lot-rate">Начальная цена</label>
-                <input id="lot-rate" type="number" name="lot-rate" placeholder="0" value="<?= $value; ?>">
+                <label for="initial_price">Начальная цена</label>
+                <input id="initial_price" type="number" name="initial_price" placeholder="0" value="<?= $value; ?>">
                 <span class="form__error">Введите начальную цену</span>
             </div>
 
@@ -100,11 +100,11 @@
                 <span class="form__error">Введите шаг ставки</span>
             </div>
 
-            <?php $class_name = isset($errors['lot-date']) ? 'form__item--invalid' : '';
-            $value = isset($lot['lot-date']) ? $lot['lot-date'] : ''; ?>
+            <?php $class_name = isset($errors['date_end']) ? 'form__item--invalid' : '';
+            $value = isset($lot['date_end']) ? $lot['date_end'] : ''; ?>
             <div class="form__item <?= $class_name ?>">
-                <label for="lot-date">Дата окончания торгов</label>
-                <input class="form__input-date" id="lot-date" type="date" name="lot-date" value="<?= $value; ?>">
+                <label for="date_end">Дата окончания торгов</label>
+                <input class="form__input-date" id="date_end" type="date" name="date_end" value="<?= $value; ?>">
                 <span class="form__error">Введите дату завершения торгов</span>
             </div>
         </div>

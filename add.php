@@ -3,22 +3,26 @@ require_once('functions.php');
 require_once('data.php');
 require_once('db_connect.php');
 
+$category_sql = 'SELECT `id`, `category_name` FROM categories';
+$categories = get_sql($db_connect, $category_sql);
+$bets_sql = '';
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
     $required =
-        ['lot-name', 'description', 'category', 'lot-rate', 'lot-step', 'lot-date'];
+        ['lot-name', 'description', 'category', 'initial_price', 'lot-step', 'date_end'];
     $dict = ['lot-name' => 'Название', 'description' => 'Описание',
         'lot_img' => 'Изображенеи', 'category' => 'Категория',
-        'lot-rate' => 'Начальная цена', 'lot-step' => 'Шаг ставки',
-        'lot-date' => 'Дата окончания торгов'];
-    $errors = check_required_field($required ,$lot);;
+        'initial_price' => 'Начальная цена', 'lot-step' => 'Шаг ставки',
+        'date_end' => 'Дата окончания торгов'];
+    $errors = check_required_field($required ,$lot);
 
     foreach ($required as $key ) {
-        if($key === 'lot-rate' || $key === 'lot-step'){
+        if($key === 'initial_price' || $key === 'lot-step'){
              if($lot[$key] <= 0) (
              $errors[$key] = 'Число дожно быть больше нуля.'
              );
-        } elseif ($key === 'lot-date'){
+        } elseif ($key === 'date_end'){
             if (strtotime( $lot[$key]) <= strtotime(date('Y-m-d'))){
               $errors[$key] = 'минимальная длительность торгов 1 день ';
           };
@@ -42,12 +46,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'dict' => $dict]);
     } else {
 
+        $category_id;
+
+        foreach ($categories as $val => $cat){
+            if ($cat['category_name'] == $lot['category']){
+                $category_id = $cat['id'];
+            }
+        }
+
+        $user_id;
 
 
-        $sql =
-            "INSERT INTO lost (name, description, lot_img, initial_price, date_end, step) VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = db_get_prepare_stmt($db_connect, $sql, [$lot['name'], $lot['description'], $lot['lot_img'],
-            $lot['initial_price'], $lot['date_end'], $lot['step']]);
+
+
+
+
+        $sql = "INSERT INTO lots (name, description, lot_img, initial_price, date_end, step, fk_user_id, fk_category_id ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt = db_get_prepare_stmt($db_connect, $sql, [$lot['lot-name'], $lot['description'], $lot['lot_img'], $lot['initial_price'], $lot['date_end'], $lot['lot-step'],$user_id , $category_id]);
         $res = mysqli_stmt_execute($stmt);
 
         if ($res){
@@ -59,8 +74,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     if ($is_auth) {
-        $category_sql = 'SELECT `id`, `category_name` FROM categories';
-        $categories = get_sql($db_connect, $category_sql);
         $page_content = render_template('add', ['categories' => $categories]);
     } else {
         $page_content = '<h3>Добавление лотов доступно только зарегистрированным пользователям</h3>';
