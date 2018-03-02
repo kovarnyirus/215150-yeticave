@@ -3,6 +3,10 @@ require_once('functions.php');
 require_once('data.php');
 require_once('db_connect.php');
 
+$category_sql = 'SELECT `id`, `category_name` FROM categories';
+$categories = get_sql($db_connect, $category_sql);
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $_POST;
     $required =

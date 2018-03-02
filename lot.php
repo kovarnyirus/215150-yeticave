@@ -1,20 +1,27 @@
 <?php
 require_once('functions.php');
-require_once('data.php');
 require_once('db_connect.php');
+require_once('data.php');
+
 
 $lot = null;
 $bets_history;
 $lot_cost;
 $date_end_lot;
 $bet_made = null;
-$bet_user_id = $_SESSION['user']['id'];
+$bet_user_id = null;
+
+if(!empty($_SESSION['user'])){
+    $bet_user_id = $_SESSION['user']['id'];
+}
 
 $category_sql = 'SELECT `id`, `category_name` FROM categories';
 $categories = get_sql($db_connect, $category_sql);
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
+
+
 
 //получаем лот
     $lot_sql =
@@ -35,12 +42,13 @@ if (isset($_GET['id'])) {
     }
 
 //время до завершения лота
-    $date_end_lot = $lot['date_end'] - date('d-m-j');
     $date_end_lots = time_end($lot['date_end']);
 
 //проверка сто последняя ставка сделана не вами
-    if ($bets_history[0]['user_id'] == $bet_user_id) {
-        $bet_made = true;
+    if ($bets_history){
+        if ($bets_history[0]['user_id'] == $bet_user_id) {
+            $bet_made = true;
+        }
     }
 
     cookies_write($cookie_name_id_lot, $id, $cookie_live, $cookie_path);
@@ -57,8 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (count($errors)) {
         $page_content = render_template('lot', ['lot' => $lot,
-            'bets' => $bets_history, 'lot_cost' => $lot_cost,
-            'date_end_lots' => $date_end_lots, 'errors' => $errors]);
+            'bets' => $bets_history,
+            'lot_cost' => $lot_cost,
+            'date_end_lots' => $date_end_lots,
+            'bet_made' => $bet_made,
+            'errors' => $errors]);
     } else {
         if ($bet['cost'] >= ($lot_cost + $lot['step']) and is_int(+$bet['cost'])) {
             $sql =
@@ -87,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $page_content = render_template('lot', ['lot' => $lot,
                 'bets' => $bets_history,
                 'lot_cost' => $lot_cost,
+                'bet_made' => $bet_made,
                 'date_end_lots' => $date_end_lots]);
         }
     }

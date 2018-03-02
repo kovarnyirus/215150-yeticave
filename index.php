@@ -1,7 +1,8 @@
 <?php
 require_once('functions.php');
-require_once('data.php');
 require_once('db_connect.php');
+require_once('data.php');
+
 
 $date_end_list = [];
 
@@ -10,8 +11,8 @@ if (!$db_connect) {
     $content = render_template('error', ['error' => $error]);
 } else {
     $category_sql = 'SELECT `id`, `category_name` FROM categories';
-
     $categories = get_sql($db_connect, $category_sql);
+
     $now_date = date( "Y-m-d", strtotime( "now" ) );
 
     $sql = "select lot.id, lot.name, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name from lots lot"
@@ -27,7 +28,6 @@ if (!$db_connect) {
     }
 
     foreach ($lots_list as $lot){
-        $date_end_lot = $lot['date_end'] - date('d-m-j');
         array_push($date_end_list, time_end($lot['date_end']))  ;
     }
 

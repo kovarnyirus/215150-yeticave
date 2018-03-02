@@ -25,7 +25,7 @@
                     </div>
                 </div>
                 <form class="lot-item__form" action="lot.php?id=<?=$lot['id']?>" method="post">
-                    <p class="lot-item__form-item <?=$class_name?>">
+                    <p class="lot-item__form-item">
                         <label for="cost">Ваша ставка</label>
                         <input id="cost" type="number" name="cost" placeholder="12 000">
                     </p>

@@ -7,5 +7,5 @@ $page_title = 'Главная';
 $cookie_path = '/';
 $cookie_live = strtotime("+30 days");
 $cookie_name_id_lot = 'history_lots_id';
-$categories = [];
+
 $lots_list = [];

@@ -1,12 +1,13 @@
 <?php
 require_once('functions.php');
-require_once('data.php');
 require_once('db_connect.php');
+require_once('data.php');
+
 
 $category_sql = 'SELECT `id`, `category_name` FROM categories';
 $categories = get_sql($db_connect, $category_sql);
 
-$bets_history;
+$bets_history = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
@@ -27,6 +28,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (strtotime( $lot[$key]) <= strtotime(date('Y-m-d'))){
               $errors[$key] = 'минимальная длительность торгов 1 день ';
           };
+        } elseif ($key === 'category'){
+            if ( $lot[$key] == 'Выберите категорию'){
+                $errors[$key] = 'Пожалуйста выберите категорию';
+            };
         };
     }
 
@@ -61,17 +66,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $res = mysqli_stmt_execute($stmt);
 
         if ($res){
-//получаем список ставок
-            $bets_sql =
-                "SELECT lots.id, `initial_price`, bets.user_price as bet, users.name, users.id as user_id, bets.bet_date FROM lots inner join bets on lots.id = bets.fk_lot_id LEFT join users on bets.fk_user_id = users.id WHERE lots.id = '$id' ORDER BY bet_date DESC";
-            $bets_history = get_sql($db_connect, $bets_sql);
+
+//            получем последний созданный лот пользователем
+            $last_lot_user_sql = "SELECT lots.id, lots.name, `description`, `step`, `date_end`, `initial_price`, `lot_img`, users.id as user_id, categories.category_name FROM lots inner join categories on fk_category_id = categories.id LEFT join users on fk_user_id = users.id WHERE users.id = '$user_id' order by id DESC LIMIT 1";
+            $last_lot_user = get_sql($db_connect, $last_lot_user_sql);
+
+            $lot = sub_array($last_lot_user);
 
             $bet_made = true;
-
-
             $page_content = render_template('lot', ['lot' => $lot,
                 'bets' => $bets_history,
-                'bet_made' => $bet_made]);
+                'bet_made' => $bet_made,
+                'categories' => $categories]);
         } else {
             $page_content =
                 render_template('error', ['error' => mysqli_error($db_connect)]);
