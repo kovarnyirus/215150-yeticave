@@ -11,6 +11,7 @@ if (isset($_COOKIE[$cookie_name_id_lot])){
     }
 };
 
+
 $page_content = render_template('history', ['history_lot' => $history_lot ,
     'bets' => $bets]);
 $layout_content = render_template('layout', [

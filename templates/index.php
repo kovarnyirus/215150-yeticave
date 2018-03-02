@@ -43,7 +43,7 @@
                             <span class="lot__cost"><?= format_price(htmlspecialchars ($value['initial_price'])); ?></span>
                         </div>
                         <div class="lot__timer timer">
-                            <?= time_tomorrow() ?>
+                            <?= $date_end_list[$key]?>
                         </div>
                     </div>
                 </div>

@@ -5,23 +5,21 @@ require_once('db_connect.php');
 
 $category_sql = 'SELECT `id`, `category_name` FROM categories';
 $categories = get_sql($db_connect, $category_sql);
-$bets_sql = '';
 
-
-
+$bets_history;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $lot = $_POST;
     $required =
-        ['lot-name', 'description', 'category', 'initial_price', 'lot-step', 'date_end'];
-    $dict = ['lot-name' => 'Название', 'description' => 'Описание',
+        ['name', 'description', 'category', 'initial_price', 'step', 'date_end'];
+    $dict = ['name' => 'Название', 'description' => 'Описание',
         'lot_img' => 'Изображенеи', 'category' => 'Категория',
-        'initial_price' => 'Начальная цена', 'lot-step' => 'Шаг ставки',
+        'initial_price' => 'Начальная цена', 'step' => 'Шаг ставки',
         'date_end' => 'Дата окончания торгов'];
     $errors = check_required_field($required ,$lot);
 
     foreach ($required as $key ) {
-        if($key === 'initial_price' || $key === 'lot-step'){
+        if($key === 'initial_price' || $key === 'step'){
              if($lot[$key] <= 0) (
              $errors[$key] = 'Число дожно быть больше нуля.'
              );
@@ -58,13 +56,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $user_id = $_SESSION['user']['id'];
 
-
         $sql = "INSERT INTO lots (name, description, lot_img, initial_price, date_end, step, fk_user_id, fk_category_id ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = db_get_prepare_stmt($db_connect, $sql, [$lot['lot-name'], $lot['description'], $lot['lot_img'], $lot['initial_price'], $lot['date_end'], $lot['lot-step'], $user_id , $category_id]);
+        $stmt = db_get_prepare_stmt($db_connect, $sql, [$lot['name'], $lot['description'], $lot['lot_img'], $lot['initial_price'], $lot['date_end'], $lot['step'], $user_id , $category_id]);
         $res = mysqli_stmt_execute($stmt);
 
         if ($res){
-            $page_content = render_template('lot', ['lot' => $lot, 'bets' => $bets]);
+//получаем список ставок
+            $bets_sql =
+                "SELECT lots.id, `initial_price`, bets.user_price as bet, users.name, users.id as user_id, bets.bet_date FROM lots inner join bets on lots.id = bets.fk_lot_id LEFT join users on bets.fk_user_id = users.id WHERE lots.id = '$id' ORDER BY bet_date DESC";
+            $bets_history = get_sql($db_connect, $bets_sql);
+
+            $bet_made = true;
+
+
+            $page_content = render_template('lot', ['lot' => $lot,
+                'bets' => $bets_history,
+                'bet_made' => $bet_made]);
         } else {
             $page_content =
                 render_template('error', ['error' => mysqli_error($db_connect)]);

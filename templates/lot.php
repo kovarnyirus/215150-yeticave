@@ -10,22 +10,22 @@
             <p class="lot-item__description"><?= $lot['description']?></p>
         </div>
         <div class="lot-item__right">
-            <?php if (isset($_SESSION['user']) and !($_SESSION['user']['id'] == $lot['user_id'])):?>
+            <?php if (isset($_SESSION['user']) and !($_SESSION['user']['id'] == $lot['user_id']) and !$bet_made ):?>
             <div class="lot-item__state">
                 <div class="lot-item__timer timer">
-                    10:54:12
+                    <?=$date_end_lots?>
                 </div>
                 <div class="lot-item__cost-state">
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost">10 999</span>
+                        <span class="lot-item__cost"><?=$lot_cost?></span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span>12 000 р</span>
+                        Мин. ставка <span><?= $lot['step']?> р</span>
                     </div>
                 </div>
                 <form class="lot-item__form" action="lot.php?id=<?=$lot['id']?>" method="post">
-                    <p class="lot-item__form-item">
+                    <p class="lot-item__form-item <?=$class_name?>">
                         <label for="cost">Ваша ставка</label>
                         <input id="cost" type="number" name="cost" placeholder="12 000">
                     </p>
@@ -34,15 +34,17 @@
             </div>
             <?php endif;?>
             <div class="history">
-                <h3>История ставок (<span>10</span>)</h3>
+                <h3>История ставок (<span><?=count($bets)?></span>)</h3>
                 <table class="history__list">
-                    <?php foreach ($bets as $value):?>
-                    <tr class="history__item">
-                        <td class="history__name"><?= htmlspecialchars ($value['name']) ?></td>
-                        <td class="history__price"><?= htmlspecialchars ($value['price']) ?> р</td>
-                        <td class="history__time"><?= date('d.m.Y H:i:s ', $value['ts']); ?></td>
-                    </tr>
-                    <?php endforeach; ?>
+                    <?php if ($bets):?>
+                        <?php foreach ($bets as $value):?>
+                        <tr class="history__item">
+                            <td class="history__name"><?= htmlspecialchars ($value['name']) ?></td>
+                            <td class="history__price"><?= htmlspecialchars ($value['bet']) ?> р</td>
+                            <td class="history__time"><?=htmlspecialchars ($value['bet_date']); ?></td>
+                         </tr>
+                        <?php endforeach; ?>
+                    <?php endif;?>
                 </table>
             </div>
         </div>

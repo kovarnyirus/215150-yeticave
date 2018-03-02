@@ -49,7 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_SESSION['user'])) {
         $page_content = render_template('index', ['lots_list' => $lots_list]);
     } else {
-        $page_content = render_template('login', []);
+        $category_sql = 'SELECT `id`, `category_name` FROM categories';
+        $categories = get_sql($db_connect, $category_sql);
+        $page_content = render_template('login', ['categories' => $categories]);
     }
 }
 

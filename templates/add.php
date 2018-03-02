@@ -13,11 +13,11 @@
           method="post"> <!-- form--invalid -->
         <h2>Добавление лота</h2>
         <div class="form__container-two">
-            <?php $class_name = isset($errors['lot-name']) ? 'form__item--invalid' : '';
-            $value = isset($lot['lot-name']) ? $lot['lot-name'] : ""; ?>
+            <?php $class_name = isset($errors['name']) ? 'form__item--invalid' : '';
+            $value = isset($lot['name']) ? $lot['name'] : ""; ?>
             <div class="form__item <?= $class_name; ?>"> <!-- form__item--invalid -->
-                <label for="lot-name">Наименование</label>
-                <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота"
+                <label for="name">Наименование</label>
+                <input id="name" type="text" name="name" placeholder="Введите наименование лота"
                        value="<?= $value; ?>">
                 <span class="form__error">Введите наименование лота</span>
             </div>
@@ -79,11 +79,11 @@
                 <span class="form__error">Введите начальную цену</span>
             </div>
 
-            <?php $class_name = isset($errors['lot-step']) ? 'form__item--invalid' : '';
-            $value = isset($lot['lot-step']) ? $lot['lot-step'] : ""; ?>
+            <?php $class_name = isset($errors['step']) ? 'form__item--invalid' : '';
+            $value = isset($lot['step']) ? $lot['step'] : ""; ?>
             <div class="form__item form__item--small <?= $class_name ?>">
-                <label for="lot-step">Шаг ставки</label>
-                <input id="lot-step" type="number" name="lot-step" placeholder="0" value="<?= $value; ?>">
+                <label for="step">Шаг ставки</label>
+                <input id="step" type="number" name="step" placeholder="0" value="<?= $value; ?>">
                 <span class="form__error">Введите шаг ставки</span>
             </div>
 

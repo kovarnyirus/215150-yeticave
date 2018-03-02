@@ -24,11 +24,15 @@ function format_price($price) {
     return $ceil_num . '  &#8381';
 };
 
-function time_tomorrow(){
+function time_end($end_date){
     $ts = time();
-    $ts_midnight = strtotime('tomorrow');
-    $secs_to_midnight = $ts_midnight - $ts;
-    return date('H:i ', $secs_to_midnight);
+    $ts_midnight = strtotime($end_date);
+    $secs_to_date_end = $ts_midnight - $ts;
+    $hours = floor($secs_to_date_end/3600);
+    $minut = floor($minutes = ($secs_to_date_end/3600 - $hours)*60);
+    $seconds = ceil(($minutes - floor($minutes))*60);
+
+    return $hours . ':' . $minut . ':' . $seconds ;
 }
 
 function check_file($file, $file_format, $move_path) {
