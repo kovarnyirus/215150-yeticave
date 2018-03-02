@@ -1,24 +1,11 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <li class="nav__item nav__item--current">
-                <a href="all-lots.html">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Разное</a>
-            </li>
+            <?php foreach ($categories as $cat): ?>
+                <li class="nav__item">
+                    <a href="all-lots.html"><?=$cat['category_name']?></a>
+                </li>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <div class="container">
@@ -32,7 +19,7 @@
                     </div>
                     <div class="lot__info">
                         <span class="lot__category"><?= $val['category_name'];?></span>
-                        <h3 class="lot__title"><a class="text-link" href="lot.html"> <?= $val['name'];?> </a></h3>
+                        <h3 class="lot__title"><a class="text-link" href="lot.php?id=<?=$val['id']?>"> <?= $val['name'];?> </a></h3>
                         <div class="lot__state">
                             <div class="lot__rate">
                                 <span class="lot__amount">Стартовая цена</span>

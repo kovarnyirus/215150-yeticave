@@ -62,3 +62,6 @@ CREATE UNIQUE INDEX user_email
   ON users (email);
 CREATE UNIQUE INDEX category_name
   ON categories (category_name);
+
+CREATE FULLTEXT INDEX lots_ft_search
+  ON lots (name, description);

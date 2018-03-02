@@ -21,8 +21,7 @@ if (isset($_COOKIE[$cookie_name_id_lot])){
 };
 
 
-$page_content = render_template('history', ['history_lot' => $history_lot,
-    'date_end_list' => $date_end_list]);
+$page_content = render_template('history', ['history_lot' => $history_lot, 'date_end_list' => $date_end_list, 'categories' => $categories]);
 $layout_content = render_template('layout', [
     'page_title' => 'История просмотров',
     'user_avatar' => $user_avatar,
