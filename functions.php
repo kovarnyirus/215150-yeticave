@@ -131,15 +131,6 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
 }
 
 
-function searchInSqlTable($connect, $table_name, $search_value, $table_fields){
-    $fields = implode(', ', $table_fields);
-    $value = mysqli_real_escape_string($connect, $search_value);
-    $sql = "SELECT $fields"
-        . " FROM $table_name";
-    $result = mysqli_query($connect, $sql);
-    return $result;
-};
-
 function check_email_users($connect, $email){
     $email = mysqli_real_escape_string($connect, $email);
     $sql = "SELECT `id`, `email`, `name`, `password`"

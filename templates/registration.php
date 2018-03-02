@@ -47,7 +47,7 @@
 
         <?php $class_name = isset($errors['contacts']) ? 'form__item--invalid' : '';
         $value = isset($user['contacts']) ? $user['contacts'] : ""; ?>
-        <div class="form__item form__item--wide <?=$class_name?>">
+        <div class="form__item <?=$class_name?>">
             <label for="contacts">Контактные данные</label>
             <textarea id="contacts" name="contacts" placeholder="Контактные данные" required><?= $value ?></textarea>
             <span class="form__error">Контактные данные</span>
@@ -78,5 +78,6 @@
             </div>
         <?php endif; ?>
         <button type="submit" class="button">Регистрация</button>
+        <a class="text-link" href="login.php">Уже есть аккаунт</a>
     </form>
 </main>
