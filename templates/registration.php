@@ -1,24 +1,11 @@
 <main>
     <nav class="nav">
         <ul class="nav__list container">
-            <li class="nav__item">
-                <a href="all-lots.html">Доски и лыжи</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Крепления</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Ботинки</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Одежда</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Инструменты</a>
-            </li>
-            <li class="nav__item">
-                <a href="all-lots.html">Разное</a>
-            </li>
+            <?php foreach ($categories as $cat): ?>
+                <li class="nav__item">
+                    <a href="all-lots.html"><?=$cat['category_name']?></a>
+                </li>
+            <?php endforeach; ?>
         </ul>
     </nav>
     <form class="form form--add-lot container <?php print (isset($errors) ? 'form--invalid' : ''); ?>" enctype="multipart/form-data" action="registration.php" method="post"> <!-- form--invalid -->
@@ -47,7 +34,7 @@
 
         <?php $class_name = isset($errors['contacts']) ? 'form__item--invalid' : '';
         $value = isset($user['contacts']) ? $user['contacts'] : ""; ?>
-        <div class="form__item form__item--wide <?=$class_name?>">
+        <div class="form__item <?=$class_name?>">
             <label for="contacts">Контактные данные</label>
             <textarea id="contacts" name="contacts" placeholder="Контактные данные" required><?= $value ?></textarea>
             <span class="form__error">Контактные данные</span>
@@ -78,5 +65,6 @@
             </div>
         <?php endif; ?>
         <button type="submit" class="button">Регистрация</button>
+        <a class="text-link" href="login.php">Уже есть аккаунт</a>
     </form>
 </main>

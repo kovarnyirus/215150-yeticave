@@ -1,7 +1,11 @@
 <?php
 require_once('functions.php');
-require_once('data.php');
 require_once('db_connect.php');
+require_once('data.php');
+
+$category_sql = 'SELECT `id`, `category_name` FROM categories';
+$categories = get_sql($db_connect, $category_sql);
+
 
 $user = [];
 
@@ -10,11 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $required = ['email', 'password'];
     $errors = check_required_field($required, $form);
 
+
+
     if (!$db_connect) {
         $error = mysqli_connect_error();
         $content = render_template('error', ['error' => $error]);
     } else {
-//        $result = searchInSqlTable($db_connect, users, $form['email'], ['name', 'email', 'password']);
 
         $result = check_email_users($db_connect, $form['email']);
 
@@ -40,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     };
 
     if (count($errors)) {
-        $page_content = render_template('login', ['form' => $form, 'errors' => $errors]);
+        $page_content = render_template('login', ['form' => $form, 'errors' => $errors, 'categories' => $categories]);
     } else {
         header("Location: /index.php");
         exit();
@@ -48,9 +53,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 } else {
     if (isset($_SESSION['user'])) {
-        $page_content = render_template('index', ['lots_list' => $lots_list]);
+        $page_content = render_template('index', ['lots_list' => $lots_list, 'categories' => $categories]);
     } else {
-        $page_content = render_template('login', []);
+        $page_content = render_template('login', ['categories' => $categories]);
     }
 }
 

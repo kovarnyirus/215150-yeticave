@@ -24,16 +24,16 @@ CREATE TABLE users (
 
 CREATE TABLE lots (
   id             INT AUTO_INCREMENT PRIMARY KEY,
-  created_date   DATETIME,
-  name           VARCHAR(70)  NOT NULL,
-  description    TEXT         NOT NULL,
-  lot_img        VARCHAR(100) NOT NULL,
-  initial_price  INT          NOT NULL,
-  date_end       DATETIME     NOT NULL,
-  step           INT          NOT NULL,
-  fk_winner_id   INT          NOT NULL,
-  fk_user_id     INT          NOT NULL,
-  fk_category_id INT          NOT NULL,
+  created_date DATETIME     NOT NULL DEFAULT NOW(),
+  name         VARCHAR(70) NOT NULL,
+  description  TEXT        NOT NULL,
+  lot_img      VARCHAR(100) NOT NULL,
+  initial_price INT         NOT NULL,
+  date_end      DATE        NOT NULL,
+  step          INT         NOT NULL,
+  fk_winner_id  INT,
+  fk_user_id    INT,
+  fk_category_id INT,
   FOREIGN KEY (fk_category_id) REFERENCES categories (id)
     ON UPDATE CASCADE,
   FOREIGN KEY (fk_user_id) REFERENCES users (id)
@@ -45,9 +45,9 @@ CREATE TABLE lots (
   CHARACTER SET = UTF8;
 
 CREATE TABLE bets (
-  id         INT AUTO_INCREMENT PRIMARY KEY,
-  bet_date   DATE NOT NULL,
-  user_price INT  NOT NULL,
+  id         INT               AUTO_INCREMENT PRIMARY KEY,
+  bet_date DATETIME NOT NULL DEFAULT NOW(),
+  user_price INT    NOT NULL,
   fk_user_id INT,
   fk_lot_id  INT,
   FOREIGN KEY (fk_user_id) REFERENCES users (id)
@@ -62,3 +62,6 @@ CREATE UNIQUE INDEX user_email
   ON users (email);
 CREATE UNIQUE INDEX category_name
   ON categories (category_name);
+
+CREATE FULLTEXT INDEX lots_ft_search
+  ON lots (name, description);
