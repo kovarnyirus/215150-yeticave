@@ -5,7 +5,8 @@ USE yeticave;
 
 CREATE TABLE categories (
   id            INT AUTO_INCREMENT PRIMARY KEY,
-  category_name VARCHAR(50) NOT NULL
+  category_name VARCHAR(50) NOT NULL,
+  html_class         VARCHAR(50)
 )
   ENGINE = InnoDB
   CHARACTER SET = UTF8;
@@ -23,8 +24,8 @@ CREATE TABLE users (
   CHARACTER SET = UTF8;
 
 CREATE TABLE lots (
-  id             INT AUTO_INCREMENT PRIMARY KEY,
-  created_date DATETIME     NOT NULL DEFAULT NOW(),
+  id             INT                                                                                                                                                                                                                           AUTO_INCREMENT PRIMARY KEY,
+  created_date DATETIME     NOT NULL                                                                                                                                                                                                             DEFAULT NOW(),
   name         VARCHAR(70) NOT NULL,
   description  TEXT        NOT NULL,
   lot_img      VARCHAR(100) NOT NULL,

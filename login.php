@@ -2,10 +2,9 @@
 require_once('functions.php');
 require_once('db_connect.php');
 require_once('data.php');
+require_once ('sql_functions.php');
 
-$category_sql = 'SELECT `id`, `category_name` FROM categories';
-$categories = get_sql($db_connect, $category_sql);
-
+$categories = sql_get_categories($db_connect);
 
 $user = [];
 
@@ -13,24 +12,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $form = $_POST;
     $required = ['email', 'password'];
     $errors = check_required_field($required, $form);
-
-
-
     if (!$db_connect) {
         $error = mysqli_connect_error();
-        $content = render_template('error', ['error' => $error]);
+        $page_content = render_template('error', ['error' => $error]);
     } else {
 
-        $result = check_email_users($db_connect, $form['email']);
+        $check_email = check_email_users($db_connect, $form['email']);
 
-        if ($result) {
-            $user = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        if ($check_email) {
+            $user = mysqli_fetch_all($check_email, MYSQLI_ASSOC);
         } else {
             $error = mysqli_error($db_connect);
-            $content = render_template('error', ['error' => $error]);
+            $page_content = render_template('error', ['error' => $error]);
         }
     }
-
 
     if (!count($errors)) {
         if ($user = searchUserByEmail($form['email'], $user)) {

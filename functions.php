@@ -28,11 +28,7 @@ function time_end($end_date){
     $ts = time();
     $ts_midnight = strtotime($end_date);
     $secs_to_date_end = $ts_midnight - $ts;
-    $hours = floor($secs_to_date_end/3600);
-    $minut = floor($minutes = ($secs_to_date_end/3600 - $hours)*60);
-    $seconds = ceil(($minutes - floor($minutes))*60);
-
-    return $hours . ':' . $minut . ':' . $seconds ;
+    return date ('jд H:i',$secs_to_date_end);
 }
 
 function check_file($file, $file_format, $move_path) {
@@ -139,7 +135,6 @@ function check_email_users($connect, $email){
     $result = mysqli_query($connect, $sql);
     return $result;
 };
-
 
 function get_sql($connect, $sql ){
     $result = mysqli_query($connect, $sql);

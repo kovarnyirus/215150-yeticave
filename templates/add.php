@@ -3,7 +3,7 @@
         <ul class="nav__list container">
             <?php foreach ($categories as $cat): ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?=$cat['category_name']?></a>
+                    <a href="all-lots.html"><?=htmlspecialchars($cat['category_name'])?></a>
                 </li>
             <?php endforeach; ?>
         </ul>
@@ -35,9 +35,9 @@
                     <option>Выберите категорию</option>
                     <?php foreach ($categories as $key => $cat): ?>
                         <?php if ($cat['category_name'] == $lot['category']): ?>
-                            <option selected ='selected'><?=$cat['category_name'];?></option>
+                            <option selected ='selected'><?=htmlspecialchars($cat['category_name']);?></option>
                         <?php else: ?>
-                            <option><?=$cat['category_name'];?></option>
+                            <option><?=htmlspecialchars($cat['category_name']);?></option>
                     <?php endif ?>
                     <?php endforeach; ?>
                 </select>

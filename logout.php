@@ -2,13 +2,21 @@
 require_once('functions.php');
 require_once('data.php');
 require_once('db_connect.php');
+require_once ('sql_functions.php');
 
 $_SESSION =[];
+$date_end_list = [];
+$categories = sql_get_categories_class($db_connect);
+$lots_list = sql_get_active_lots($db_connect);
 
-$category_sql = 'SELECT `id`, `category_name` FROM categories';
-$categories = get_sql($db_connect, $category_sql);
+foreach ($lots_list as $lot){
+    array_push($date_end_list, time_end($lot['date_end']));
+}
 
-$page_content = render_template('index', ['lots_list' => $lots_list ]);
+$page_content = render_template('index', [
+    'lots_list' => $lots_list,
+    'date_end_list' => $date_end_list,
+    'categories' => $categories ]);
 $layout_content = render_template('layout', [
     'page_title' => 'Добавить лот',
     'user_avatar' => $user_avatar,
