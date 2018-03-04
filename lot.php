@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             $errors['cost'] =
-                "ставка должна быть целой и не может быть меньше текущей цены + Мин. ставка";
+                "ставка должна быть целой и не может быть меньше Мин. ставки";
             $page_content = render_template('lot', [
                 'lot' => $lot,
                 'bets' => $bets_history,
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 //время до завершения лота
         $date_end_lots = time_end($lot['date_end']);
 
-//проверка сто последняя ставка сделана не вами
+//проверка что последняя ставка сделана не вами
         if ($bets_history) {
             if ($bets_history[0]['user_id'] == $bet_user_id) {
                 $bet_made = true;
@@ -132,9 +132,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'bet_made' => $bet_made]);
     };
 }
-
-
-
 
 $layout_content = render_template('layout', [
     'page_title' => $page_title,

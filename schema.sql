@@ -15,7 +15,7 @@ CREATE TABLE users (
   id           INT AUTO_INCREMENT PRIMARY KEY,
   name         VARCHAR(30) NOT NULL,
   email        VARCHAR(30) NOT NULL UNIQUE,
-  password     VARCHAR(68) NOT NULL UNIQUE,
+  password     VARCHAR(68) NOT NULL,
   avatar       VARCHAR(60) NULL,
   contacts     VARCHAR(50) NULL,
   created_date DATETIME

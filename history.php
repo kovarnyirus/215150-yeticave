@@ -12,7 +12,7 @@ $categories = sql_get_categories($db_connect);
 if (isset($_COOKIE[$cookie_name_id_lot])){
     $history_lots_id = json_decode($_COOKIE[$cookie_name_id_lot]);
     foreach ($history_lots_id as $key => $value){
-        $lot_arr = sql_get_lot($db_connect, $value);
+        $lot_arr = sql_get_lot($db_connect, [$value]);
         $lot = sub_array($lot_arr);
         array_push ($history_lot, $lot);
         array_push($date_end_list, time_end($lot['date_end']));

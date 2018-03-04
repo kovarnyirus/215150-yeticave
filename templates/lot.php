@@ -21,7 +21,7 @@
                         <span class="lot-item__cost"><?=htmlspecialchars($lot_cost)?></span>
                     </div>
                     <div class="lot-item__min-cost">
-                        Мин. ставка <span><?=htmlspecialchars( $lot['step'])?> р</span>
+                        Мин. ставка <span><?=htmlspecialchars( $lot['step'] + $lot_cost)?> р</span>
                     </div>
                 </div>
                 <form class="lot-item__form" action="lot.php?id=<?=$lot['id']?>" method="post">

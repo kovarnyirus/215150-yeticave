@@ -1,5 +1,13 @@
 <?php
 session_start();
+
+/**
+ * функция вывода шаблона
+ *
+ * @param $name_template - имя шаблона
+ * @param $array_data - массив с данными искользуемые в шаблоне
+ * @return string
+ */
 function render_template ($name_template, $array_data) {
     $PATH = 'templates/';
     $EXTENSION ='.php';
@@ -15,6 +23,12 @@ function render_template ($name_template, $array_data) {
 
 };
 
+/**
+ * фушкция форматирования цены
+ *
+ * @param $price - число которое надо отформатировать
+ * @return string
+ */
 function format_price($price) {
     $ceil_num = ceil($price);
     if ($ceil_num > 1000) {
@@ -24,6 +38,12 @@ function format_price($price) {
     return $ceil_num . '  &#8381';
 };
 
+/**
+ * возвращает время окончания публикации лота
+ *
+ * @param $end_date - дата снятия с публикации которую указал пользователь
+ * @return string - возвращает отформатированную дату
+ */
 function time_end($end_date){
     $ts = time();
     $ts_midnight = strtotime($end_date);
@@ -31,6 +51,14 @@ function time_end($end_date){
     return date ('jд H:i',$secs_to_date_end);
 }
 
+/**
+ * функция проверки изображения на соответствие оформату.
+ *
+ * @param $file - обрабатываемый файл
+ * @param $file_format - формат которому должен соответсвовать файл
+ * @param $move_path - путь куда следует переместить изображение
+ * @return string - с сылкой на файл либо строку с текстом ошибки.
+ */
 function check_file($file, $file_format, $move_path) {
     if ($file['name']) {
         $tmp_name = $file['tmp_name'];
@@ -50,6 +78,14 @@ function check_file($file, $file_format, $move_path) {
     return 'no file';
 };
 
+/**
+ * запись в cookies
+ *
+ * @param $name_cookies -имя cookies
+ * @param $value - записываемо значение
+ * @param $expire - время жиззни cookies
+ * @param $path - путь
+ */
 function cookies_write($name_cookies, $value, $expire, $path) {
     $history_lot = [];
     if (isset($_COOKIE[$name_cookies])) {
@@ -61,6 +97,13 @@ function cookies_write($name_cookies, $value, $expire, $path) {
     setcookie($name_cookies, json_encode($history_lot), $expire, $path);
 };
 
+/**
+ * поиск пользователя по email
+ *
+ * @param $email
+ * @param $users
+ * @return - массив с данными пользователя
+ */
 function searchUserByEmail($email, $users) {
     $result = null;
     foreach ($users as $user) {
@@ -72,6 +115,13 @@ function searchUserByEmail($email, $users) {
     return $result;
 };
 
+/**
+ * проверят что обязательные поля заполнены
+ *
+ * @param $required_arr - массив с полями обязательными для заполнения
+ * @param $check_array - проверяемы поля
+ * @return array errors
+ */
 function check_required_field($required_arr, $check_array){
     $errors=[];
     foreach ($required_arr as $key){
@@ -126,27 +176,12 @@ function db_get_prepare_stmt($link, $sql, $data = []) {
     return $stmt;
 }
 
-
-function check_email_users($connect, $email){
-    $email = mysqli_real_escape_string($connect, $email);
-    $sql = "SELECT `id`, `email`, `name`, `password`"
-        ." FROM users"
-        . " WHERE email = '$email'";
-    $result = mysqli_query($connect, $sql);
-    return $result;
-};
-
-function get_sql($connect, $sql ){
-    $result = mysqli_query($connect, $sql);
-    if ($result) {
-        return mysqli_fetch_all($result, MYSQLI_ASSOC);
-    }else {
-        $error = mysqli_error($connect);
-        return $content = render_template('error', ['error' => $error]);
-    }
-}
-
-//    звозвращает ассоциативный массив с лотом значениями которого являются значения двумерного массива
+/**
+ * звозвращает ассоциативный массив с лотом значениями которого являются значения двумерного массива
+ *
+ * @param $array_in - двумерный массив
+ * @return array -ассоциативный массив
+ */
 function sub_array($array_in) {
     $array_out = [];
     foreach ($array_in as $subArr) {

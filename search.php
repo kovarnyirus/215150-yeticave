@@ -10,15 +10,11 @@ if (!$db_connect) {
 }
 else {
     $categories = sql_get_categories($db_connect);
-
     $date_end_list = [];
-
     $search = $_GET['search'] ?? '';
 
     if ($search) {
-        $search_lots_sql = "SELECT lots.id, lots.name, `description`, `step`, `date_end`, `initial_price`, `lot_img`, users.id as user_id, categories.category_name FROM lots inner join categories on fk_category_id = categories.id LEFT join users on fk_user_id = users.id WHERE MATCH(lots.name, lots.description) AGAINST('$search');";
-        $search_lots = get_sql($db_connect, $search_lots_sql);
-
+        $search_lots = sql_search_lots($db_connect, [$search]);
         $page_content = render_template('search', ['search_lots' => $search_lots, 'search' => $search, 'categories' => $categories]);
     } else {
         $search_lots =[];
