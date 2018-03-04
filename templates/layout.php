@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title><?= $page_title ?></title>
+    <title><?= $page_title ? htmlspecialchars($page_title) :  'yeticave' ?></title>
     <link href="css/normalize.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 </head>
@@ -24,10 +24,10 @@
         <nav class="user-menu">
             <?php if ($is_auth): ?>
                 <div class="user-menu__image">
-                    <img src="<?= $user_avatar ?>" width="40" height="40" alt="Пользователь">
+                    <img src="<?= htmlspecialchars($user_avatar) ?>" width="40" height="40" alt="Пользователь">
                 </div>
                 <div class="user-menu__logged">
-                    <p><?= $user_name ?></p>
+                    <p><?= htmlspecialchars($user_name) ?></p>
                     <a href="logout.php">Выход</a>
                 </div>
             <?php else: ?>
@@ -54,7 +54,7 @@
         <ul class="nav__list container">
             <?php foreach ($categories as $cat): ?>
                 <li class="nav__item">
-                    <a href="all-lots.html"><?= $cat['category_name']; ?></a>
+                    <a href="all-lots.html"><?= htmlspecialchars($cat['category_name']); ?></a>
                 </li>
             <?php endforeach; ?>
         </ul>

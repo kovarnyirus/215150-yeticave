@@ -2,8 +2,14 @@
 USE yeticave;
 
 # заполняем таблицу с категориями
-INSERT INTO categories (category_name)
-VALUES ('Доски и лыжи'), ('Крепления'), ('Ботинки'), ('Одежда'), ('Инструменты'), ('Разное');
+INSERT INTO categories (category_name, html_class)
+VALUES
+  ('Доски и лыжи', 'promo__item--boards'),
+  ('Крепления', 'promo__item--attachment'),
+  ('Ботинки', 'promo__item--boots'),
+  ('Одежда', 'promo__item--clothing'),
+  ('Инструменты', 'promo__item--tools'),
+  ('Разное', 'promo__item--other');
 
 # заполняем таблицу с пользователями
 INSERT INTO users (email, name, password, created_date)
