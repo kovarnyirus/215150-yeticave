@@ -17,11 +17,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $page_content = render_template('error', ['error' => $error]);
     } else {
 
-        $check_email = check_email_users($db_connect, $form['email']);
+        $user = check_email_users($db_connect, [$form['email']]);
 
-        if ($check_email) {
-            $user = mysqli_fetch_all($check_email, MYSQLI_ASSOC);
-        } else {
+        if (!$user) {
             $error = mysqli_error($db_connect);
             $page_content = render_template('error', ['error' => $error]);
         }

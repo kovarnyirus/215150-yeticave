@@ -14,10 +14,9 @@ function sql_get_categories($db_connect)
     if ($result) {
         $res = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
-    } else {
-        return $page_content =
-            render_template('error', ['error' => mysqli_error($db_connect)]);
     }
+    return $page_content =
+            render_template('error', ['error' => mysqli_error($db_connect)]);
 };
 
 /**
@@ -33,10 +32,9 @@ function sql_get_categories_class($db_connect){
     if ($result) {
         $res = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
-    } else {
-        return $page_content =
-            render_template('error', ['error' => mysqli_error($db_connect)]);
     }
+    return $page_content =
+            render_template('error', ['error' => mysqli_error($db_connect)]);
 };
 
 /**
@@ -55,10 +53,9 @@ function sql_get_last_lot_user($db_connect, $user_id)
     if ($result) {
         $res = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
-    } else {
-        return $page_content =
-            render_template('error', ['error' => mysqli_error($db_connect)]);
     }
+    return $page_content =
+            render_template('error', ['error' => mysqli_error($db_connect)]);
 };
 
 /**
@@ -76,10 +73,9 @@ function sql_get_lot($db_connect, $lot_id){
     if ($result) {
         $res = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
-    } else {
-        return $page_content =
-            render_template('error', ['error' => mysqli_error($db_connect)]);
     }
+    return $page_content =
+            render_template('error', ['error' => mysqli_error($db_connect)]);
 };
 
 /**
@@ -92,17 +88,16 @@ function sql_get_active_lots($db_connect){
     $now_date = date( "Y-m-d", strtotime( "now" ) );
     $sql = "select lot.id, lot.name, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name from lots lot"
         . " inner join categories on lot.fk_category_id = categories.id"
-        . " where lot.date_end > '$now_date'"
+        . " where lot.date_end > ?"
         . " group by lot.id, lot.name, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name"
         . " ORDER BY lot.created_date DESC";
-    $stmt = db_get_prepare_stmt($db_connect, $sql);
+    $stmt = db_get_prepare_stmt($db_connect, $sql, [$now_date]);
     $result = mysqli_stmt_execute($stmt);
     if ($result) {
         $res = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
-    } else {
-        return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
     }
+    return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
 };
 
 /**
@@ -146,12 +141,9 @@ function sql_get_bets_list($db_connect, $data){
     if ($result) {
         $res = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
-    } else {
-        return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
     }
+    return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
 }
-
-
 
 /**
  * получить все email
@@ -166,10 +158,10 @@ function sql_get_all_emails($db_connect){
     if ($result) {
         $res = mysqli_stmt_get_result($stmt);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
-    } else {
-        return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
     }
+    return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
 }
+
 
 
 /**
@@ -185,3 +177,41 @@ function sql_add_user($db_connect, $data){
     $stmt = db_get_prepare_stmt($db_connect, $sql, $data);
     return mysqli_stmt_execute($stmt);
 }
+
+
+/**
+ * возвращает пользователя с нужным email
+ *
+ * @param $connect
+ * @param $email - емеил по которому будет происходить поиск
+ * @return array
+ */
+function check_email_users($connect, $email){
+    $sql = "SELECT `id`, `email`, `name`, `password`"
+        ." FROM users"
+        . " WHERE email = ?";
+    $stmt = db_get_prepare_stmt($connect, $sql, $email);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $result;
+};
+/**
+ * возвращает список лотов отвечающие поисковому запросу
+ *
+ * @param $connect
+ * @param $email - емеил по которому будет происходить поиск
+ * @return array
+ */
+function sql_search_lots($connect, $data){
+    $search_lots_sql = "SELECT lots.id, lots.name, `description`, `step`, `date_end`, `initial_price`, `lot_img`, users.id as user_id, categories.category_name FROM lots inner join categories on fk_category_id = categories.id LEFT join users on fk_user_id = users.id WHERE MATCH(lots.name, lots.description) AGAINST(?);";
+    $stmt = db_get_prepare_stmt($connect, $search_lots_sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $result;
+};
