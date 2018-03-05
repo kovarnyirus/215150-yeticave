@@ -20,7 +20,7 @@ VALUES
    '2017-10-10 00:00:00');
 
 # заполняем таблицу с лотами
-INSERT INTO lots (created_date, name, description, lot_img, initial_price, date_end, step, fk_winner_id, fk_user_id, fk_category_id)
+INSERT INTO lots (created_date, name, description, lot_img, initial_price, date_end, step, fk_user_id, fk_category_id)
 VALUES
   ('2018-01-05 00:00:01',
   '2014 Rossignol District Snowboard',
@@ -30,7 +30,6 @@ VALUES
    '2018-04-10 00:00:00',
    '500',
    '1',
-   '2',
    '2'
   ),
   ('2018-01-05 00:00:05',
@@ -41,7 +40,6 @@ VALUES
    '2018-04-03 00:00:00',
    '800',
    '3',
-   '2',
    '3'
   ),
   ('2018-01-05 00:00:08',
@@ -52,7 +50,6 @@ VALUES
     '2018-04-08 00:00:00',
     '2500',
     '1',
-    '3',
     '5'
   ),
   ('2018-01-05 00:00:10',
@@ -63,7 +60,6 @@ VALUES
     '2018-03-18 00:00:00',
     '100',
     '1',
-    '2',
     '4'
   ),
   ('2018-01-05 00:01:01',
@@ -74,7 +70,6 @@ VALUES
     '2018-03-15 00:00:00',
     '2000',
     '2',
-    '1',
     '6'
   ),
   ('2018-01-05 00:10:01',
@@ -85,7 +80,6 @@ VALUES
     '2018-02-28 00:00:00',
     '1500',
     '2',
-    '3',
     '2'
   );
 

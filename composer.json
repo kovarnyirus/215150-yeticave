@@ -1,0 +1,15 @@
+{
+    "name": "kova/215150-yeticave",
+    "description": "htmlacademy project",
+    "type": "project",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "kovarnyirus",
+            "email": "kovarnyi@gmail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.0"
+    }
+}

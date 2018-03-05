@@ -1,5 +1,6 @@
 <?php
 require_once('functions.php');
+require_once('vendor/autoload.php');
 /**
  * получить список категорий
  *
@@ -214,4 +215,17 @@ function sql_search_lots($connect, $data){
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
     }
     return $result;
+};
+
+
+function sql_get_lots_end($db_connect){
+    $now_date = date( "Y-m-d", strtotime( "now" ) );
+    $sql = "select lot.id, lot.name, users.name, lot.fk_winner_id, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name from lots lot inner join categories on lot.fk_category_id = categories.id LEFT join users on lot.fk_winner_id = users.id where (lot.date_end <= ? ) and !(lot.fk_winner_id is null) group by lot.id, lot.name, users.name, lot.fk_winner_id, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name ORDER BY lot.created_date DESC";
+    $stmt = db_get_prepare_stmt($db_connect, $sql, [$now_date]);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
 };

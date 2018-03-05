@@ -3,6 +3,7 @@ require_once('functions.php');
 require_once('data.php');
 require_once('db_connect.php');
 require_once ('sql_functions.php');
+require_once('vendor/autoload.php');
 
 $_SESSION =[];
 $date_end_list = [];

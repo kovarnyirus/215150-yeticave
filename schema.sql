@@ -24,15 +24,15 @@ CREATE TABLE users (
   CHARACTER SET = UTF8;
 
 CREATE TABLE lots (
-  id             INT                                                                                                                                                                                                                           AUTO_INCREMENT PRIMARY KEY,
-  created_date DATETIME     NOT NULL                                                                                                                                                                                                             DEFAULT NOW(),
-  name         VARCHAR(70) NOT NULL,
-  description  TEXT        NOT NULL,
+  id             INT        AUTO_INCREMENT PRIMARY KEY,
+  created_date DATETIME     NOT NULL  DEFAULT NOW(),
+  name         VARCHAR(70)  NOT NULL,
+  description  TEXT         NOT NULL,
   lot_img      VARCHAR(100) NOT NULL,
   initial_price INT         NOT NULL,
   date_end      DATE        NOT NULL,
   step          INT         NOT NULL,
-  fk_winner_id  INT,
+  fk_winner_id  INT         DEFAULT NULL,
   fk_user_id    INT,
   fk_category_id INT,
   FOREIGN KEY (fk_category_id) REFERENCES categories (id)
@@ -46,7 +46,7 @@ CREATE TABLE lots (
   CHARACTER SET = UTF8;
 
 CREATE TABLE bets (
-  id         INT               AUTO_INCREMENT PRIMARY KEY,
+  id         INT    AUTO_INCREMENT PRIMARY KEY,
   bet_date DATETIME NOT NULL DEFAULT NOW(),
   user_price INT    NOT NULL,
   fk_user_id INT,
