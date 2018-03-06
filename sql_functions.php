@@ -218,9 +218,15 @@ function sql_search_lots($connect, $data){
 };
 
 
+/**
+ * получение списка лотов с истекшим сроком публикации и без победителя.
+ *
+ * @param $db_connect
+ * @return array|null|string
+ */
 function sql_get_lots_end($db_connect){
     $now_date = date( "Y-m-d", strtotime( "now" ) );
-    $sql = "select lot.id, lot.name, users.name, lot.fk_winner_id, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name from lots lot inner join categories on lot.fk_category_id = categories.id LEFT join users on lot.fk_winner_id = users.id where (lot.date_end <= ? ) and !(lot.fk_winner_id is null) group by lot.id, lot.name, users.name, lot.fk_winner_id, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name ORDER BY lot.created_date DESC";
+    $sql = "select lot.id, lot.name, users.name, lot.fk_winner_id, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name from lots lot inner join categories on lot.fk_category_id = categories.id LEFT join users on lot.fk_user_id = users.id where lot.date_end <= ?  and !lot.fk_winner_id is null group by lot.id, lot.name, users.name, lot.fk_winner_id, lot.initial_price, lot.lot_img, lot.date_end, lot.created_date, categories.category_name ORDER BY lot.created_date DESC";
     $stmt = db_get_prepare_stmt($db_connect, $sql, [$now_date]);
     $result = mysqli_stmt_execute($stmt);
     if ($result) {
@@ -229,3 +235,34 @@ function sql_get_lots_end($db_connect){
     }
     return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
 };
+
+/**
+ * запрос на получение последней ставки по id лота
+ *
+ * @param $db_connect
+ * @param $data id лота
+ */
+function sql_get_last_bet($db_connect, $data){
+    $bet_sql =
+        "SELECT lots.id, `initial_price`, bets.user_price as bet, users.name, users.id as user_id, bets.bet_date FROM lots inner join bets on lots.id = bets.fk_lot_id LEFT join users on bets.fk_user_id = users.id WHERE lots.id = ? ORDER BY bet_date DESC LIMIT 1";
+    $stmt = db_get_prepare_stmt($db_connect, $bet_sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
+}
+
+/**
+ * обновление значение победителя на id user совершившего последнию ставку
+ *
+ * @param $db_connect
+ * @param $data
+ * @return bool
+ */
+function sql_update_winner($db_connect, $data){
+  $update_sql = "UPDATE lots SET fk_winner_id = ? WHERE lots.id = ?";
+    $stmt = db_get_prepare_stmt($db_connect, $update_sql, $data);
+    return mysqli_stmt_execute($stmt);
+}
