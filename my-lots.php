@@ -14,13 +14,14 @@ if (!$db_connect) {
 } elseif (!empty($_SESSION['user'])) {
     $bet_user_id = $_SESSION['user']['id'];
     $categories = sql_get_categories_class($db_connect);
-    $lots_list = sql_get_active_lots($db_connect);
+    $bets_list = sql_get_bets_user($db_connect, [$bet_user_id]);
 
-    foreach ($lots_list as $lot) {
-        array_push($date_end_list, time_end($lot['date_end']));
-    }
-
-    $page_content = render_template('my-lots',['categories' => $categories] );
+    $page_content = render_template('my-lots',[
+        'categories' => $categories,
+        'bets_list' => $bets_list,
+        'user_id' => $bet_user_id,
+        'db_connect' => $db_connect
+        ] );
 
 } else {
     $categories = sql_get_categories_class($db_connect);
@@ -42,11 +43,4 @@ $layout_content = render_template('layout', [
 ]);
 print ($layout_content);
 
-SELECT
-lots.id, lots.name, lots.lot_img, users.contacts as user_contacts, categories.category_name, `initial_price`, bets.user_price as bet, users.name as user_name, users.id as user_id, bets.bet_date
-FROM lots inner
-join bets on lots.id = bets.fk_lot_id
-LEFT join users on bets.fk_user_id = users.id
-right join categories on lots.fk_category_id = categories.id
-WHERE users.id = 4
-ORDER BY bet_date DESC
+

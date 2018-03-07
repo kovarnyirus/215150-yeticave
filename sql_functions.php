@@ -241,7 +241,7 @@ function sql_get_lots_end($db_connect){
  */
 function sql_get_last_bet($db_connect, $data){
     $bet_sql =
-        "SELECT lots.id, `initial_price`, users.email as user_email, bets.user_price as bet, users.name, users.id as user_id, bets.bet_date FROM lots inner join bets on lots.id = bets.fk_lot_id LEFT join users on bets.fk_user_id = users.id WHERE lots.id = ? ORDER BY bet_date DESC LIMIT 1";
+        "SELECT lots.id, `initial_price`, users.email as user_email, bets.id as bet_id, bets.user_price as bet, users.name, users.id as user_id, bets.bet_date FROM lots inner join bets on lots.id = bets.fk_lot_id LEFT join users on bets.fk_user_id = users.id WHERE lots.id = ? ORDER BY bet_date DESC LIMIT 1";
     $stmt = db_get_prepare_stmt($db_connect, $bet_sql, $data);
     $result = mysqli_stmt_execute($stmt);
     if ($result) {
@@ -262,4 +262,17 @@ function sql_update_winner($db_connect, $data){
   $update_sql = "UPDATE lots SET fk_winner_id = ? WHERE lots.id = ?";
     $stmt = db_get_prepare_stmt($db_connect, $update_sql, $data);
     return mysqli_stmt_execute($stmt);
+}
+
+
+function sql_get_bets_user($db_connect, $data){
+
+$user_bets_sql = "SELECT lots.id as lot_id, lots.name, bets.id as last_bet, lots.lot_img, fk_winner_id, lots.date_end, users.contacts as user_contacts, categories.category_name, bets.user_price as bet, users.name as user_name, users.id as user_id, bets.bet_date FROM lots inner join bets on lots.id = bets.fk_lot_id LEFT join users on bets.fk_user_id = users.id right join categories on lots.fk_category_id = categories.id WHERE users.id = ? ORDER BY bet_date DESC";
+    $stmt = db_get_prepare_stmt($db_connect, $user_bets_sql, $data);
+    $result = mysqli_stmt_execute($stmt);
+    if ($result) {
+        $res = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+    }
+    return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
 }

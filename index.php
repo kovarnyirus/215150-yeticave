@@ -4,7 +4,7 @@ require_once('db_connect.php');
 require_once('data.php');
 require_once ('sql_functions.php');
 require_once('vendor/autoload.php');
-require_once('getwinner.php');
+
 
 $date_end_list = [];
 $lots_list = [];
@@ -13,6 +13,7 @@ if (!$db_connect) {
     $error = mysqli_connect_error();
     $content = render_template('error', ['error' => $error]);
 } else {
+    require_once('getwinner.php');
     $categories = sql_get_categories_class($db_connect);
     $lots_list = sql_get_active_lots($db_connect);
     foreach ($lots_list as $lot){

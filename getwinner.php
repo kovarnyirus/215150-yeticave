@@ -8,8 +8,8 @@ require_once('vendor/autoload.php');
 $lots = sql_get_lots_end($db_connect);
 foreach ($lots as $lot){
    $winner = sql_get_last_bet($db_connect, [$lot['id']]);
-   $update_winner = sql_update_winner($db_connect, [$winner[0]['user_id'], $lot['id']]);
-   if ($update_winner){
+   if (isset($winner[0])){
+       $update_winner = sql_update_winner($db_connect, [$winner[0]['user_id'], $lot['id']]);
         $winner_template = render_template('email', [
             'user_name' => $winner[0]['name'],
             'lot_name' => $lot['lot_name'],
@@ -17,15 +17,14 @@ foreach ($lots as $lot){
             ]);
 
        $transport = (new Swift_SmtpTransport('smtp.yandex.ru', 465, 'SSL'))
-           ->setUsername('doingsdone@mail.ru ')
-           ->setPassword('rds7BgcL');
+           ->setUsername('testphpmails@yandex.ru')
+           ->setPassword('test123');
        $mailer = new Swift_Mailer($transport);
        $message = (new Swift_Message('Ваша ставка победила'))
-           ->setFrom(['doingsdone@mail.ru ' => 'Andrew'])
+           ->setFrom(['testphpmails@yandex.ru' => 'Andrew'])
            ->setTo([strval($winner[0]['user_email']) => strval($winner[0]['name'])])
            ->setBody($winner_template, 'text/html');
        $send = $mailer->send($message);
-
    }
 }
 
