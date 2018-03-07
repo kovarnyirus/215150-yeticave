@@ -34,7 +34,7 @@ if (!$db_connect) {
 
 
 $layout_content = render_template('layout', [
-    'page_title' => $page_title,
+    'page_title' => 'Список моих ставок',
     'user_avatar' => $user_avatar,
     'user_name' => $user_name,
     'is_auth' => $is_auth,
