@@ -114,7 +114,6 @@ function sql_add_lot($db_connect, $data){
     return $res = mysqli_stmt_execute($stmt);
 }
 
-
 /**
  * добавление данных
  *
@@ -163,8 +162,6 @@ function sql_get_all_emails($db_connect){
     return $page_content = render_template('error', ['error' => mysqli_error($db_connect)]);
 }
 
-
-
 /**
  * добавление пользователя в базу
  *
@@ -178,7 +175,6 @@ function sql_add_user($db_connect, $data){
     $stmt = db_get_prepare_stmt($db_connect, $sql, $data);
     return mysqli_stmt_execute($stmt);
 }
-
 
 /**
  * возвращает пользователя с нужным email
@@ -199,6 +195,7 @@ function check_email_users($connect, $email){
     }
     return $result;
 };
+
 /**
  * возвращает список лотов отвечающие поисковому запросу
  *
