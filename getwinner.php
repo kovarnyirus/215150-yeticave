@@ -16,12 +16,12 @@ foreach ($lots as $lot){
             'lot_id' => $lot['id']
             ]);
 
-       $transport = (new Swift_SmtpTransport('smtp.yandex.ru', 465, 'SSL'))
-           ->setUsername('testphpmails@yandex.ru')
+       $transport = (new Swift_SmtpTransport('smtp.yandex.com', 465, 'SSL'))
+           ->setUsername('testphpmails@yandex.com')
            ->setPassword('test123');
        $mailer = new Swift_Mailer($transport);
        $message = (new Swift_Message('Ваша ставка победила'))
-           ->setFrom(['testphpmails@yandex.ru' => 'Andrew'])
+           ->setFrom(['testphpmails@yandex.com' => 'Andrew'])
            ->setTo([strval($winner[0]['user_email']) => strval($winner[0]['name'])])
            ->setBody($winner_template, 'text/html');
        $send = $mailer->send($message);
