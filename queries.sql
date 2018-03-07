@@ -12,12 +12,11 @@ VALUES
   ('Разное', 'promo__item--other');
 
 # заполняем таблицу с пользователями
-INSERT INTO users (email, name, password, created_date)
+INSERT INTO users (email, name, password, contacts, created_date)
 VALUES
-  ('ignat.v@gmail.com', 'Игнат', '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka', '2017-03-09 00:00:00'),
-  ('kitty_93@li.ru', 'Леночка', '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa', '2017-08-09 00:00:00'),
-  ('warrior07@mail.ru', 'Руслан', '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW',
-   '2017-10-10 00:00:00');
+  ('ignat.v@gmail.com', 'Игнат', '$2y$10$OqvsKHQwr0Wk6FMZDoHo1uHoXd4UdxJG/5UDtUiie00XaxMHrW8ka', 'email@mail.ru', '2017-03-09 00:00:00'),
+  ('kitty_93@li.ru', 'Леночка', '$2y$10$bWtSjUhwgggtxrnJ7rxmIe63ABubHQs0AS0hgnOo41IEdMHkYoSVa', 'email@mail.ru', '2017-08-09 00:00:00'),
+  ('warrior07@mail.ru', 'Руслан', '$2y$10$2OxpEH7narYpkOT1H5cApezuzh10tZEEQ2axgFOaKW.55LxIJBgWW', 'email@mail.ru', '2017-10-10 00:00:00');
 
 # заполняем таблицу с лотами
 INSERT INTO lots (created_date, name, description, lot_img, initial_price, date_end, step, fk_user_id, fk_category_id)
@@ -85,9 +84,9 @@ VALUES
 
 # заполняем таблицу со ставками
 INSERT INTO bets (user_price, bet_date, fk_user_id, fk_lot_id) VALUES
-  ('2500', '2018-01-05 00-00-00', '2', '6'),
-  ('4000', '2018-01-06 00-00-00', '1', '6'),
-  ('800', '2018-01-08 00-00-00', '1', '1');
+  ('2500', '2018-01-05 12-40-00', '2', '6'),
+  ('4000', '2018-01-22 18-00-00', '1', '6'),
+  ('800', '2018-01-04 12-30-00', '3', '6');
 
 # получить все категории;
 
