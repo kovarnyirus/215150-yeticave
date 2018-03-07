@@ -28,7 +28,7 @@
                         <img src="<?=htmlspecialchars($bet['lot_img'])?>" width="54" height="40" alt="Сноуборд">
                     </div>
                     <div>
-                    <h3 class="rates__title"><a href="lot.php?id=<?= htmlspecialchars($bet['id'])?>"><?=htmlspecialchars($bet['name'])?></a>
+                    <h3 class="rates__title"><a href="lot.php?id=<?= htmlspecialchars($bet['lot_id'])?>"><?=htmlspecialchars($bet['name'])?></a>
                     </h3>
                     <?= $bet['fk_winner_id'] == $user_id ? '<p>' . htmlspecialchars($bet['user_contacts']) . '</p>' : ''?>
                     </div>
